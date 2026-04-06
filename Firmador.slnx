@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Firmador.Core/Firmador.Core.csproj" />
+  <Project Path="Firmador.ApiClient/Firmador.ApiClient.csproj" />
+  <Project Path="Firmador.Cliente/Firmador.Cliente.csproj" />
+</Solution>
