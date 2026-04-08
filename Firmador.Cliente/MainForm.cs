@@ -5,6 +5,7 @@ using Firmador.Cliente.Services;
 using Firmador.Cliente.ViewModels;
 using Firmador.Core.Common;
 using Firmador.Core.Documentos;
+using Firmador.Core.Firma;
 
 namespace Firmador.Cliente;
 
@@ -14,7 +15,7 @@ public partial class MainForm : Form
 
     private readonly IDocumentosApiClient _documentosApiClient;
     private readonly CertificateSelectorService _certificateSelectorService;
-    private readonly LocalPdfSigningService _pdfSigningService;
+    private readonly IFirmaPdfService _pdfSigningService;
     private readonly SolutionPaths _solutionPaths;
 
     private PagedResult<DocumentoResumen>? _paginaActual;
@@ -24,7 +25,7 @@ public partial class MainForm : Form
     public MainForm(
         IDocumentosApiClient documentosApiClient,
         CertificateSelectorService certificateSelectorService,
-        LocalPdfSigningService pdfSigningService,
+        IFirmaPdfService pdfSigningService,
         SolutionPaths solutionPaths)
     {
         _documentosApiClient = documentosApiClient;
@@ -166,7 +167,7 @@ public partial class MainForm : Form
     {
         var lineas = resultados
             .Select(resultado =>
-                $"Documento {resultado.DocumentoId}: {Path.GetFileName(resultado.ArchivoFirmado)} y {Path.GetFileName(resultado.ArchivoFirmaCms)}")
+                $"Documento {resultado.DocumentoId}: {Path.GetFileName(resultado.ArchivoFirmado)}")
             .ToList();
 
         return "Documentos firmados correctamente.\n\n" + string.Join('\n', lineas);
