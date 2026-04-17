@@ -160,6 +160,7 @@
             // 
             // lblCertificadoSeleccionado
             // 
+            lblCertificadoSeleccionado.BackColor = Color.LightYellow;
             lblCertificadoSeleccionado.BorderStyle = BorderStyle.FixedSingle;
             lblCertificadoSeleccionado.Location = new Point(24, 52);
             lblCertificadoSeleccionado.Name = "lblCertificadoSeleccionado";

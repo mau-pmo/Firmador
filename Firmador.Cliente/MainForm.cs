@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Security.Cryptography.X509Certificates;
 using Firmador.ApiClient.Abstractions;
 using Firmador.Cliente.Services;
@@ -34,7 +35,49 @@ public partial class MainForm : Form
         _solutionPaths = solutionPaths;
 
         InitializeComponent();
+        ConfigurarBotonFirmar();
         InicializarPantalla();
+    }
+
+    private void ConfigurarBotonFirmar()
+    {
+        btnFirmarDocumentos.Image = CrearIconoLapicera();
+        btnFirmarDocumentos.ImageAlign = ContentAlignment.MiddleLeft;
+        btnFirmarDocumentos.TextImageRelation = TextImageRelation.ImageBeforeText;
+        btnFirmarDocumentos.Padding = new Padding(8, 0, 8, 0);
+    }
+
+    private static Bitmap CrearIconoLapicera()
+    {
+        var bitmap = new Bitmap(18, 18);
+
+        using var graphics = Graphics.FromImage(bitmap);
+        graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        graphics.Clear(Color.Transparent);
+
+        using var cuerpoLapicera = new Pen(Color.FromArgb(36, 99, 235), 3)
+        {
+            StartCap = LineCap.Round,
+            EndCap = LineCap.Round
+        };
+        using var detalleLapicera = new Pen(Color.FromArgb(30, 41, 59), 2)
+        {
+            StartCap = LineCap.Round,
+            EndCap = LineCap.Round
+        };
+        using var punta = new SolidBrush(Color.FromArgb(217, 119, 6));
+
+        graphics.DrawLine(cuerpoLapicera, 4, 13, 11, 6);
+        graphics.DrawLine(detalleLapicera, 11, 6, 14, 3);
+        graphics.FillPolygon(punta, new[]
+        {
+            new Point(14, 3),
+            new Point(15, 5),
+            new Point(12, 6)
+        });
+        graphics.DrawLine(detalleLapicera, 3, 14, 5, 12);
+
+        return bitmap;
     }
 
     private async Task CargarPaginaAsync(int numeroPagina)
@@ -97,8 +140,11 @@ public partial class MainForm : Form
     private void ActualizarCertificadoSeleccionado()
     {
         lblCertificadoSeleccionado.Text = _certificadoSeleccionado is null
-            ? "No seleccionado"
+            ? "No hay certificado seleccionado"
             : _certificadoSeleccionado.Subject;
+        lblCertificadoSeleccionado.BackColor = _certificadoSeleccionado is null
+            ? Color.LightYellow
+            : Color.LightGreen;
     }
 
     private void ToggleControles(bool habilitado)
