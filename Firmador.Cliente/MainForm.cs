@@ -105,6 +105,8 @@ public partial class MainForm : Form
     {
         btnBuscar.Enabled = habilitado;
         btnFirmarDocumentos.Enabled = habilitado;
+        btnMarcarTodos.Enabled = habilitado;
+        btnLimpiarSeleccion.Enabled = habilitado;
         btnSeleccionarCertificado.Enabled = habilitado;
         btnSalir.Enabled = habilitado;
         btnPaginaAnterior.Enabled = habilitado && _paginaActual is not null && _paginaActual.PageNumber > 1;
@@ -122,6 +124,21 @@ public partial class MainForm : Form
             .Where(item => item is not null && item.Seleccionado)
             .Cast<DocumentoGridItem>()
             .ToList();
+    }
+
+    private void EstablecerSeleccionDocumentos(bool seleccionado)
+    {
+        dgvDocumentos.EndEdit();
+
+        foreach (var item in dgvDocumentos.Rows
+                     .Cast<DataGridViewRow>()
+                     .Select(row => row.DataBoundItem as DocumentoGridItem)
+                     .Where(item => item is not null))
+        {
+            item!.Seleccionado = seleccionado;
+        }
+
+        dgvDocumentos.Refresh();
     }
 
     private X509Certificate2? ObtenerOCapturarCertificado()
@@ -296,6 +313,16 @@ public partial class MainForm : Form
         {
             ToggleControles(true);
         }
+    }
+
+    private void btnMarcarTodos_Click(object sender, EventArgs e)
+    {
+        EstablecerSeleccionDocumentos(true);
+    }
+
+    private void btnLimpiarSeleccion_Click(object sender, EventArgs e)
+    {
+        EstablecerSeleccionDocumentos(false);
     }
 
     private void btnSalir_Click(object sender, EventArgs e)

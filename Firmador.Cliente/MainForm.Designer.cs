@@ -1,4 +1,4 @@
-namespace Firmador.Cliente
+﻿namespace Firmador.Cliente
 {
     partial class MainForm
     {
@@ -40,6 +40,8 @@ namespace Firmador.Cliente
             lblCertificadoTitulo = new Label();
             lblCertificadoSeleccionado = new Label();
             btnSeleccionarCertificado = new Button();
+            btnMarcarTodos = new Button();
+            btnLimpiarSeleccion = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -48,7 +50,7 @@ namespace Firmador.Cliente
             btnBuscar.Location = new Point(1099, 109);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(140, 44);
-            btnBuscar.TabIndex = 0;
+            btnBuscar.TabIndex = 2;
             btnBuscar.Text = "Buscar";
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click;
@@ -58,7 +60,7 @@ namespace Firmador.Cliente
             btnFirmarDocumentos.Location = new Point(1255, 109);
             btnFirmarDocumentos.Name = "btnFirmarDocumentos";
             btnFirmarDocumentos.Size = new Size(140, 44);
-            btnFirmarDocumentos.TabIndex = 1;
+            btnFirmarDocumentos.TabIndex = 3;
             btnFirmarDocumentos.Text = "Firmar";
             btnFirmarDocumentos.UseVisualStyleBackColor = true;
             btnFirmarDocumentos.Click += btnFirmarDocumentos_Click;
@@ -174,11 +176,37 @@ namespace Firmador.Cliente
             btnSeleccionarCertificado.UseVisualStyleBackColor = true;
             btnSeleccionarCertificado.Click += btnSeleccionarCertificado_Click;
             // 
+            // btnMarcarTodos
+            // 
+            btnMarcarTodos.Font = new Font("Segoe UI", 8F);
+            btnMarcarTodos.Location = new Point(47, 109);
+            btnMarcarTodos.Margin = new Padding(3, 1, 3, 1);
+            btnMarcarTodos.Name = "btnMarcarTodos";
+            btnMarcarTodos.Size = new Size(97, 55);
+            btnMarcarTodos.TabIndex = 0;
+            btnMarcarTodos.Text = "Marcar todos";
+            btnMarcarTodos.UseVisualStyleBackColor = true;
+            btnMarcarTodos.Click += btnMarcarTodos_Click;
+            // 
+            // btnLimpiarSeleccion
+            // 
+            btnLimpiarSeleccion.Font = new Font("Segoe UI", 8F);
+            btnLimpiarSeleccion.Location = new Point(170, 109);
+            btnLimpiarSeleccion.Margin = new Padding(3, 1, 3, 1);
+            btnLimpiarSeleccion.Name = "btnLimpiarSeleccion";
+            btnLimpiarSeleccion.Size = new Size(113, 55);
+            btnLimpiarSeleccion.TabIndex = 1;
+            btnLimpiarSeleccion.Text = "Limpiar selección";
+            btnLimpiarSeleccion.UseVisualStyleBackColor = true;
+            btnLimpiarSeleccion.Click += btnLimpiarSeleccion_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1419, 700);
+            Controls.Add(btnLimpiarSeleccion);
+            Controls.Add(btnMarcarTodos);
             Controls.Add(lblTotalDocumentos);
             Controls.Add(btnSeleccionarCertificado);
             Controls.Add(lblCertificadoSeleccionado);
@@ -215,5 +243,8 @@ namespace Firmador.Cliente
         private Label lblCertificadoTitulo;
         private Label lblCertificadoSeleccionado;
         private Button btnSeleccionarCertificado;
+        private Button btnMarcarTodos;
+        private Button btnLimpiarSeleccion;
     }
 }
+
