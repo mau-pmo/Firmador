@@ -45,7 +45,7 @@ namespace Firmador.Cliente
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(874, 24);
+            btnBuscar.Location = new Point(1099, 109);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(140, 44);
             btnBuscar.TabIndex = 0;
@@ -55,7 +55,7 @@ namespace Firmador.Cliente
             // 
             // btnFirmarDocumentos
             // 
-            btnFirmarDocumentos.Location = new Point(1030, 24);
+            btnFirmarDocumentos.Location = new Point(1255, 109);
             btnFirmarDocumentos.Name = "btnFirmarDocumentos";
             btnFirmarDocumentos.Size = new Size(140, 44);
             btnFirmarDocumentos.TabIndex = 1;
@@ -65,7 +65,7 @@ namespace Firmador.Cliente
             // 
             // btnSalir
             // 
-            btnSalir.Location = new Point(1186, 24);
+            btnSalir.Location = new Point(1275, 12);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(132, 44);
             btnSalir.TabIndex = 2;
@@ -83,13 +83,13 @@ namespace Firmador.Cliente
             dgvDocumentos.BackgroundColor = SystemColors.Window;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colVerPdf });
-            dgvDocumentos.Location = new Point(24, 92);
+            dgvDocumentos.Location = new Point(24, 168);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.RowHeadersVisible = false;
             dgvDocumentos.RowHeadersWidth = 62;
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDocumentos.Size = new Size(1294, 482);
+            dgvDocumentos.Size = new Size(1371, 449);
             dgvDocumentos.TabIndex = 3;
             dgvDocumentos.CellContentClick += dgvDocumentos_CellContentClick;
             dgvDocumentos.CurrentCellDirtyStateChanged += dgvDocumentos_CurrentCellDirtyStateChanged;
@@ -106,7 +106,7 @@ namespace Firmador.Cliente
             // btnPaginaAnterior
             // 
             btnPaginaAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPaginaAnterior.Location = new Point(994, 595);
+            btnPaginaAnterior.Location = new Point(1071, 638);
             btnPaginaAnterior.Name = "btnPaginaAnterior";
             btnPaginaAnterior.Size = new Size(120, 38);
             btnPaginaAnterior.TabIndex = 4;
@@ -117,7 +117,7 @@ namespace Firmador.Cliente
             // btnPaginaSiguiente
             // 
             btnPaginaSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPaginaSiguiente.Location = new Point(1198, 595);
+            btnPaginaSiguiente.Location = new Point(1275, 638);
             btnPaginaSiguiente.Name = "btnPaginaSiguiente";
             btnPaginaSiguiente.Size = new Size(120, 38);
             btnPaginaSiguiente.TabIndex = 5;
@@ -128,7 +128,7 @@ namespace Firmador.Cliente
             // lblPagina
             // 
             lblPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblPagina.Location = new Point(817, 601);
+            lblPagina.Location = new Point(894, 644);
             lblPagina.Name = "lblPagina";
             lblPagina.Size = new Size(161, 25);
             lblPagina.TabIndex = 6;
@@ -138,7 +138,7 @@ namespace Firmador.Cliente
             // lblTotalDocumentos
             // 
             lblTotalDocumentos.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblTotalDocumentos.Location = new Point(24, 602);
+            lblTotalDocumentos.Location = new Point(27, 645);
             lblTotalDocumentos.Name = "lblTotalDocumentos";
             lblTotalDocumentos.Size = new Size(311, 25);
             lblTotalDocumentos.TabIndex = 10;
@@ -178,7 +178,7 @@ namespace Firmador.Cliente
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1342, 657);
+            ClientSize = new Size(1419, 700);
             Controls.Add(lblTotalDocumentos);
             Controls.Add(btnSeleccionarCertificado);
             Controls.Add(lblCertificadoSeleccionado);
