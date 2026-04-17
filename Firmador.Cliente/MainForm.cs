@@ -35,8 +35,17 @@ public partial class MainForm : Form
         _solutionPaths = solutionPaths;
 
         InitializeComponent();
+        ConfigurarBotonBuscar();
         ConfigurarBotonFirmar();
         InicializarPantalla();
+    }
+
+    private void ConfigurarBotonBuscar()
+    {
+        btnBuscar.Image = CrearIconoBusqueda();
+        btnBuscar.ImageAlign = ContentAlignment.MiddleLeft;
+        btnBuscar.TextImageRelation = TextImageRelation.ImageBeforeText;
+        btnBuscar.Padding = new Padding(8, 0, 8, 0);
     }
 
     private void ConfigurarBotonFirmar()
@@ -45,6 +54,32 @@ public partial class MainForm : Form
         btnFirmarDocumentos.ImageAlign = ContentAlignment.MiddleLeft;
         btnFirmarDocumentos.TextImageRelation = TextImageRelation.ImageBeforeText;
         btnFirmarDocumentos.Padding = new Padding(8, 0, 8, 0);
+    }
+
+    private static Bitmap CrearIconoBusqueda()
+    {
+        var bitmap = new Bitmap(18, 18);
+
+        using var graphics = Graphics.FromImage(bitmap);
+        graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        graphics.Clear(Color.Transparent);
+
+        using var lente = new Pen(Color.FromArgb(30, 41, 59), 2)
+        {
+            StartCap = LineCap.Round,
+            EndCap = LineCap.Round
+        };
+        using var brillo = new Pen(Color.FromArgb(59, 130, 246), 1)
+        {
+            StartCap = LineCap.Round,
+            EndCap = LineCap.Round
+        };
+
+        graphics.DrawEllipse(lente, 3, 3, 8, 8);
+        graphics.DrawLine(lente, 10, 10, 14, 14);
+        graphics.DrawArc(brillo, 4, 4, 6, 6, 215, 90);
+
+        return bitmap;
     }
 
     private static Bitmap CrearIconoLapicera()
