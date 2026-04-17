@@ -103,6 +103,7 @@ public partial class MainForm : Form
     {
         btnBuscar.Enabled = habilitado;
         btnFirmarDocumentos.Enabled = habilitado;
+        btnSeleccionarCertificado.Enabled = habilitado;
         btnSalir.Enabled = habilitado;
         btnPaginaAnterior.Enabled = habilitado && _paginaActual is not null && _paginaActual.PageNumber > 1;
         btnPaginaSiguiente.Enabled = habilitado && _paginaActual is not null && _paginaActual.PageNumber < _paginaActual.TotalPages;
@@ -126,6 +127,44 @@ public partial class MainForm : Form
         if (_certificadoSeleccionado is not null)
         {
             return _certificadoSeleccionado;
+        }
+
+        var certificado = _certificateSelectorService.SeleccionarCertificadoParaFirma(this);
+        if (certificado is null)
+        {
+            return null;
+        }
+
+        _certificadoSeleccionado = certificado;
+        ActualizarCertificadoSeleccionado();
+        return _certificadoSeleccionado;
+    }
+
+    private void btnSeleccionarCertificado_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var certificado = ObtenerOCapturarCertificado(forzarNuevaSeleccion: true);
+            if (certificado is null)
+            {
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"No fue posible seleccionar el certificado.\n\nDetalle: {ex.Message}",
+                "Seleccionar certificado",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+    }
+
+    private X509Certificate2? ObtenerOCapturarCertificado(bool forzarNuevaSeleccion)
+    {
+        if (!forzarNuevaSeleccion)
+        {
+            return ObtenerOCapturarCertificado();
         }
 
         var certificado = _certificateSelectorService.SeleccionarCertificadoParaFirma(this);

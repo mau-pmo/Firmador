@@ -42,6 +42,7 @@ namespace Firmador.Cliente
             lblPagina = new Label();
             lblCertificadoTitulo = new Label();
             lblCertificadoSeleccionado = new Label();
+            btnSeleccionarCertificado = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -186,15 +187,26 @@ namespace Firmador.Cliente
             lblCertificadoSeleccionado.BorderStyle = BorderStyle.FixedSingle;
             lblCertificadoSeleccionado.Location = new Point(24, 52);
             lblCertificadoSeleccionado.Name = "lblCertificadoSeleccionado";
-            lblCertificadoSeleccionado.Size = new Size(832, 28);
+            lblCertificadoSeleccionado.Size = new Size(676, 28);
             lblCertificadoSeleccionado.TabIndex = 8;
             lblCertificadoSeleccionado.Text = "No seleccionado";
+            // 
+            // btnSeleccionarCertificado
+            // 
+            btnSeleccionarCertificado.Location = new Point(716, 45);
+            btnSeleccionarCertificado.Name = "btnSeleccionarCertificado";
+            btnSeleccionarCertificado.Size = new Size(140, 40);
+            btnSeleccionarCertificado.TabIndex = 9;
+            btnSeleccionarCertificado.Text = "Seleccionar";
+            btnSeleccionarCertificado.UseVisualStyleBackColor = true;
+            btnSeleccionarCertificado.Click += btnSeleccionarCertificado_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1342, 657);
+            Controls.Add(btnSeleccionarCertificado);
             Controls.Add(lblCertificadoSeleccionado);
             Controls.Add(lblCertificadoTitulo);
             Controls.Add(lblPagina);
@@ -227,5 +239,6 @@ namespace Firmador.Cliente
         private Label lblPagina;
         private Label lblCertificadoTitulo;
         private Label lblCertificadoSeleccionado;
+        private Button btnSeleccionarCertificado;
     }
 }
