@@ -57,6 +57,7 @@
             // 
             // btnFirmarDocumentos
             // 
+            btnFirmarDocumentos.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnFirmarDocumentos.Location = new Point(1255, 109);
             btnFirmarDocumentos.Name = "btnFirmarDocumentos";
             btnFirmarDocumentos.Size = new Size(140, 44);
@@ -194,7 +195,7 @@
             btnLimpiarSeleccion.Location = new Point(170, 109);
             btnLimpiarSeleccion.Margin = new Padding(3, 1, 3, 1);
             btnLimpiarSeleccion.Name = "btnLimpiarSeleccion";
-            btnLimpiarSeleccion.Size = new Size(113, 55);
+            btnLimpiarSeleccion.Size = new Size(97, 55);
             btnLimpiarSeleccion.TabIndex = 1;
             btnLimpiarSeleccion.Text = "Limpiar selección";
             btnLimpiarSeleccion.UseVisualStyleBackColor = true;
