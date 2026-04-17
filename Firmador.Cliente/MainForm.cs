@@ -75,12 +75,14 @@ public partial class MainForm : Form
         if (!_busquedaRealizada || _paginaActual is null)
         {
             lblPagina.Text = "Sin busqueda";
+            lblTotalDocumentos.Text = "Total de documentos: 0";
             btnPaginaAnterior.Enabled = false;
             btnPaginaSiguiente.Enabled = false;
             return;
         }
 
         lblPagina.Text = $"Pagina {_paginaActual.PageNumber} de {_paginaActual.TotalPages}";
+        lblTotalDocumentos.Text = $"Total de documentos: {_paginaActual.TotalCount}";
         btnPaginaAnterior.Enabled = _paginaActual.PageNumber > 1;
         btnPaginaSiguiente.Enabled = _paginaActual.PageNumber < _paginaActual.TotalPages;
     }
@@ -348,5 +350,10 @@ public partial class MainForm : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
+    }
+
+    private void lblTotalDocumentos_Click(object sender, EventArgs e)
+    {
+
     }
 }

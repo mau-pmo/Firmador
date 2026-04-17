@@ -32,14 +32,11 @@ namespace Firmador.Cliente
             btnFirmarDocumentos = new Button();
             btnSalir = new Button();
             dgvDocumentos = new DataGridView();
-            colSeleccionar = new DataGridViewCheckBoxColumn();
-            colId = new DataGridViewTextBoxColumn();
-            colTipoDocumento = new DataGridViewTextBoxColumn();
-            colTitulo = new DataGridViewTextBoxColumn();
             colVerPdf = new DataGridViewButtonColumn();
             btnPaginaAnterior = new Button();
             btnPaginaSiguiente = new Button();
             lblPagina = new Label();
+            lblTotalDocumentos = new Label();
             lblCertificadoTitulo = new Label();
             lblCertificadoSeleccionado = new Label();
             btnSeleccionarCertificado = new Button();
@@ -82,55 +79,20 @@ namespace Firmador.Cliente
             dgvDocumentos.AllowUserToDeleteRows = false;
             dgvDocumentos.AllowUserToResizeRows = false;
             dgvDocumentos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvDocumentos.AutoGenerateColumns = false;
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDocumentos.BackgroundColor = SystemColors.Window;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colId, colTipoDocumento, colTitulo, colVerPdf });
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colVerPdf });
             dgvDocumentos.Location = new Point(24, 92);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.RowHeadersVisible = false;
-            dgvDocumentos.RowTemplate.Height = 33;
+            dgvDocumentos.RowHeadersWidth = 62;
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDocumentos.Size = new Size(1294, 482);
             dgvDocumentos.TabIndex = 3;
             dgvDocumentos.CellContentClick += dgvDocumentos_CellContentClick;
             dgvDocumentos.CurrentCellDirtyStateChanged += dgvDocumentos_CurrentCellDirtyStateChanged;
-            // 
-            // colSeleccionar
-            // 
-            colSeleccionar.DataPropertyName = "Seleccionado";
-            colSeleccionar.FillWeight = 55F;
-            colSeleccionar.HeaderText = "";
-            colSeleccionar.MinimumWidth = 50;
-            colSeleccionar.Name = "colSeleccionar";
-            // 
-            // colId
-            // 
-            colId.DataPropertyName = "Id";
-            colId.HeaderText = "Id";
-            colId.MinimumWidth = 8;
-            colId.Name = "colId";
-            colId.Visible = false;
-            // 
-            // colTipoDocumento
-            // 
-            colTipoDocumento.DataPropertyName = "TipoDocumento";
-            colTipoDocumento.FillWeight = 140F;
-            colTipoDocumento.HeaderText = "Tipo de documento";
-            colTipoDocumento.MinimumWidth = 8;
-            colTipoDocumento.Name = "colTipoDocumento";
-            colTipoDocumento.ReadOnly = true;
-            // 
-            // colTitulo
-            // 
-            colTitulo.DataPropertyName = "Titulo";
-            colTitulo.FillWeight = 220F;
-            colTitulo.HeaderText = "Titulo";
-            colTitulo.MinimumWidth = 8;
-            colTitulo.Name = "colTitulo";
-            colTitulo.ReadOnly = true;
             // 
             // colVerPdf
             // 
@@ -173,12 +135,23 @@ namespace Firmador.Cliente
             lblPagina.Text = "Sin busqueda";
             lblPagina.TextAlign = ContentAlignment.MiddleRight;
             // 
+            // lblTotalDocumentos
+            // 
+            lblTotalDocumentos.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblTotalDocumentos.Location = new Point(24, 602);
+            lblTotalDocumentos.Name = "lblTotalDocumentos";
+            lblTotalDocumentos.Size = new Size(311, 25);
+            lblTotalDocumentos.TabIndex = 10;
+            lblTotalDocumentos.Text = "Total de documentos: 0";
+            lblTotalDocumentos.TextAlign = ContentAlignment.MiddleLeft;
+            lblTotalDocumentos.Click += lblTotalDocumentos_Click;
+            // 
             // lblCertificadoTitulo
             // 
             lblCertificadoTitulo.AutoSize = true;
             lblCertificadoTitulo.Location = new Point(24, 24);
             lblCertificadoTitulo.Name = "lblCertificadoTitulo";
-            lblCertificadoTitulo.Size = new Size(159, 25);
+            lblCertificadoTitulo.Size = new Size(152, 25);
             lblCertificadoTitulo.TabIndex = 7;
             lblCertificadoTitulo.Text = "Certificado actual:";
             // 
@@ -206,6 +179,7 @@ namespace Firmador.Cliente
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1342, 657);
+            Controls.Add(lblTotalDocumentos);
             Controls.Add(btnSeleccionarCertificado);
             Controls.Add(lblCertificadoSeleccionado);
             Controls.Add(lblCertificadoTitulo);
@@ -237,6 +211,7 @@ namespace Firmador.Cliente
         private Button btnPaginaAnterior;
         private Button btnPaginaSiguiente;
         private Label lblPagina;
+        private Label lblTotalDocumentos;
         private Label lblCertificadoTitulo;
         private Label lblCertificadoSeleccionado;
         private Button btnSeleccionarCertificado;
