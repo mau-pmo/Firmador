@@ -98,7 +98,7 @@ public partial class MainForm : Form
     {
         lblCertificadoSeleccionado.Text = _certificadoSeleccionado is null
             ? "No seleccionado"
-            : $"{_certificadoSeleccionado.GetNameInfo(X509NameType.SimpleName, false)} | {_certificadoSeleccionado.Thumbprint}";
+            : _certificadoSeleccionado.Subject;
     }
 
     private void ToggleControles(bool habilitado)
