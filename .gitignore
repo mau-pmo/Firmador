@@ -6,3 +6,5 @@ obj/
 docs/firmados/
 .dotnet/
 .dotnet-home/
+/publish/
+/**/publish/
