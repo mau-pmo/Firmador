@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Firmador.ApiClient\Firmador.ApiClient.csproj" />
     <ProjectReference Include="..\Firmador.Core\Firmador.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\docs\*.pdf" Link="docs\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

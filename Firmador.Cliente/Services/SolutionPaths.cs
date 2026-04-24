@@ -3,22 +3,48 @@ namespace Firmador.Cliente.Services;
 public sealed class SolutionPaths
 {
     private const string SolutionFileName = "Firmador.slnx";
+    private const string DocsDirectoryName = "docs";
+    private const string SignedDirectoryName = "firmados";
 
-    private readonly string _solutionRoot;
+    private readonly string _documentosRoot;
+    private readonly string _directorioFirmados;
 
     public SolutionPaths()
     {
-        _solutionRoot = ResolverSolutionRoot();
+        _documentosRoot = ResolverDirectorioDocumentos();
+        _directorioFirmados = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Firmador",
+            DocsDirectoryName,
+            SignedDirectoryName);
     }
 
     public string ObtenerRutaDocumentoPdf(int documentoId)
     {
-        return Path.Combine(_solutionRoot, "docs", $"{documentoId}.pdf");
+        return Path.Combine(_documentosRoot, $"{documentoId}.pdf");
     }
 
     public string ObtenerDirectorioFirmados()
     {
-        return Path.Combine(_solutionRoot, "docs", "firmados");
+        return _directorioFirmados;
+    }
+
+    private static string ResolverDirectorioDocumentos()
+    {
+        var directorioPublicacion = Path.Combine(AppContext.BaseDirectory, DocsDirectoryName);
+        if (Directory.Exists(directorioPublicacion))
+        {
+            return directorioPublicacion;
+        }
+
+        var solutionRoot = ResolverSolutionRoot();
+        var directorioDesarrollo = Path.Combine(solutionRoot, DocsDirectoryName);
+        if (Directory.Exists(directorioDesarrollo))
+        {
+            return directorioDesarrollo;
+        }
+
+        throw new DirectoryNotFoundException($"No se pudo encontrar la carpeta {DocsDirectoryName}.");
     }
 
     private static string ResolverSolutionRoot()
