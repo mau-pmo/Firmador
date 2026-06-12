@@ -43,7 +43,7 @@ public sealed class WindowsPdfSigningService : IFirmaPdfService
         var archivoFirmado = IOPath.Combine(directorioSalida, $"{nombreBase}.pdf");
         await Task.Yield();
 
-        var ubicacionFirma = ObtenerPrimeraUbicacionLibre(archivoEntradaPdf);
+        var ubicacionFirma = ObtenerPrimeraUbicacionLibreDesdeUltimaPagina(archivoEntradaPdf);
 
         using var reader = new PdfReader(archivoEntradaPdf);
         using var output = new IOFileStream(archivoFirmado, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -87,10 +87,10 @@ public sealed class WindowsPdfSigningService : IFirmaPdfService
             .SetPageNumber(ubicacionFirma.PageNumber);
     }
 
-    private static SignaturePlacement ObtenerPrimeraUbicacionLibre(string archivoEntradaPdf)
+    private static SignaturePlacement ObtenerPrimeraUbicacionLibreDesdeUltimaPagina(string archivoEntradaPdf)
     {
         using var pdf = new PdfDocument(new PdfReader(archivoEntradaPdf));
-        for (var pageNumber = 1; pageNumber <= pdf.GetNumberOfPages(); pageNumber++)
+        for (var pageNumber = pdf.GetNumberOfPages(); pageNumber >= 1; pageNumber--)
         {
             var page = pdf.GetPage(pageNumber);
             var pageSize = page.GetPageSize();
