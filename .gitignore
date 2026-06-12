@@ -3,7 +3,7 @@ obj/
 .vs/
 *.user
 *.suo
-docs/firmados/
+/docs/
 .dotnet/
 .dotnet-home/
 /publish/
