@@ -1,6 +1,7 @@
 # Firmador
 
 Aplicativo cliente para instalar en equipos con sistema operativo Windows que permite realizar la firma digital, con token USB, de un documento PDF.
+El cliente no tiene la información, sino que interactúa con un sistema web (vía APIs) para obtener la información y luego enviarle el resultado de lo realizado localmente. 
 
 ## Flujo general
 
