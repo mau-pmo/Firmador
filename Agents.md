@@ -11,7 +11,11 @@
 - `Firmador.Cliente/Services/CertificateSelectorService.cs`: selecciona certificados vigentes con clave privada desde `CurrentUser/My`.
 - `Firmador.ApiClient`: abstracciones y cliente mock para documentos. Hoy usa `MockDocumentosApiClient`.
 - `Firmador.Core`: contratos, modelos y resultados compartidos (`IFirmaPdfService`, `DocumentoResumen`, `PagedResult`, etc.).
-- `docs`: PDFs de prueba que se copian al output del cliente.
+- `doc_tecnica`: documentacion funcional y tecnica del proyecto.
+- `doc_tecnica/Funcionalidades.md`: descripcion funcional y flujo general de Firmador.
+- `doc_tecnica/Especificacion-Integracion-API-Firmador.md`: fuente versionable del contrato propuesto con el backend web.
+- `doc_tecnica/Especificacion-Integracion-API-Firmador.docx`: copia presentable del mismo contrato para compartir con el equipo web; debe mantenerse sincronizada con el Markdown.
+- `docs`: exclusivamente PDFs de prueba que se copian al output del cliente.
 
 ## Reglas de negocio actuales
 
@@ -24,6 +28,8 @@
 ## Como trabajar
 
 - Preferir cambios chicos y coherentes con la arquitectura actual: UI en `Firmador.Cliente`, contratos en `Core`, integraciones/API en `Firmador.ApiClient`.
+- Antes de trabajar sobre funcionalidades, consultar `doc_tecnica/Funcionalidades.md`.
+- Antes de disenar o implementar la integracion web, consultar `doc_tecnica/Especificacion-Integracion-API-Firmador.md` y tratar el Markdown como fuente principal.
 - No meter logica de firma dentro del formulario si puede quedar en servicios.
 - Cuidar compatibilidad Windows y WinForms; la app depende del almacen de certificados de Windows y de tokens USB expuestos como certificados con clave privada.
 - Evitar recorrer o modificar los PDFs de `docs` salvo que la tarea lo pida.
