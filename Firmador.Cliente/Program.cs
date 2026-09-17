@@ -1,4 +1,5 @@
 using Firmador.ApiClient.Documentos;
+using System.Text.Json;
 using Firmador.Cliente.Services;
 using Firmador.Core.Firma;
 
@@ -21,12 +22,36 @@ internal static class Program
 
         try
         {
-            Application.Run(
-                new MainForm(
-                    new MockDocumentosApiClient(),
-                    new CertificateSelectorService(),
-                    new WindowsPdfSigningService(),
-                    new SolutionPaths()));
+            var url = Environment.GetEnvironmentVariable("FIRMADOR_API_BASE_URL");
+            var configuracion = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+            using var json = JsonDocument.Parse(File.ReadAllText(configuracion));
+            var permitirHttpDePrueba = json.RootElement.TryGetProperty("AllowInsecureHttp", out var opcionHttp)
+                && opcionHttp.ValueKind == JsonValueKind.True;
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                url = json.RootElement.GetProperty("ApiBaseUrl").GetString();
+            }
+            if (string.IsNullOrWhiteSpace(url))
+                throw new InvalidOperationException("Configure ApiBaseUrl en appsettings.json o FIRMADOR_API_BASE_URL antes de iniciar.");
+
+            using var api = new FirmadorApiClient(url, permitirHttpDePrueba);
+            while (true)
+            {
+                using var login = new LoginForm();
+                if (login.ShowDialog() != DialogResult.OK) return;
+                try
+                {
+                    api.IniciarSesionAsync(login.Usuario, login.Contrasena).GetAwaiter().GetResult();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            Application.Run(new MainForm(api, new CertificateSelectorService(), new WindowsPdfSigningService(), new SolutionPaths()));
+            try { api.CerrarSesionAsync().GetAwaiter().GetResult(); }
+            catch { /* La sesión local se descarta aunque falle la revocación remota. */ }
         }
         catch (Exception ex)
         {

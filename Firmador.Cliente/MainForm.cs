@@ -14,7 +14,7 @@ public partial class MainForm : Form
 {
     private const int PageSize = 10;
 
-    private readonly IDocumentosApiClient _documentosApiClient;
+    private readonly IFirmadorApiClient _documentosApiClient;
     private readonly CertificateSelectorService _certificateSelectorService;
     private readonly IFirmaPdfService _pdfSigningService;
     private readonly SolutionPaths _solutionPaths;
@@ -22,9 +22,10 @@ public partial class MainForm : Form
     private PagedResult<DocumentoResumen>? _paginaActual;
     private bool _busquedaRealizada;
     private X509Certificate2? _certificadoSeleccionado;
+    private readonly Dictionary<int, (string Version, byte[] Pdf, Guid Clave)> _enviosPendientes = [];
 
     public MainForm(
-        IDocumentosApiClient documentosApiClient,
+        IFirmadorApiClient documentosApiClient,
         CertificateSelectorService certificateSelectorService,
         IFirmaPdfService pdfSigningService,
         SolutionPaths solutionPaths)
@@ -126,6 +127,10 @@ public partial class MainForm : Form
             ActualizarGrilla();
             ActualizarPaginacion();
         }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"No fue posible buscar documentos.\n\n{ex.Message}", "Buscar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         finally
         {
             ToggleControles(true);
@@ -140,12 +145,15 @@ public partial class MainForm : Form
                 Id = documento.Id,
                 TipoDocumento = documento.TipoDocumento,
                 Titulo = documento.Titulo,
-                Hash = documento.Hash
+                Hash = documento.Hash,
+                Version = documento.Version
             })
             .ToList() ?? [];
 
         dgvDocumentos.DataSource = null;
         dgvDocumentos.DataSource = items;
+        foreach (var nombre in new[] { nameof(DocumentoGridItem.Id), nameof(DocumentoGridItem.Hash), nameof(DocumentoGridItem.Version) })
+            if (dgvDocumentos.Columns[nombre] is { } columna) columna.Visible = false;
     }
 
     private void ActualizarPaginacion()
@@ -278,38 +286,45 @@ public partial class MainForm : Form
         return _certificadoSeleccionado;
     }
 
-    private async Task<List<FirmaDocumentoResultado>> FirmarDocumentosSeleccionadosAsync(
+    private async Task<List<string>> FirmarDocumentosSeleccionadosAsync(
         IReadOnlyCollection<DocumentoGridItem> documentosSeleccionados,
         X509Certificate2 certificado,
         CancellationToken cancellationToken = default)
     {
-        var resultados = new List<FirmaDocumentoResultado>();
+        var resultados = new List<string>();
         var directorioFirmados = _solutionPaths.ObtenerDirectorioFirmados();
 
         foreach (var documento in documentosSeleccionados)
         {
-            var rutaPdf = _solutionPaths.ObtenerRutaDocumentoPdf(documento.Id);
-            var resultado = await _pdfSigningService.FirmarAsync(
-                documento.Id,
-                rutaPdf,
-                directorioFirmados,
-                certificado,
-                cancellationToken);
-
-            resultados.Add(resultado);
+            try
+            {
+                var resumen = ObtenerResumen(documento.Id);
+                if (!_enviosPendientes.TryGetValue(documento.Id, out var envio) || envio.Version != resumen.Version)
+                {
+                    var pdf = await _documentosApiClient.DescargarPdfAsync(resumen, cancellationToken);
+                    var rutaPdf = GuardarPdfTemporal(resumen, pdf);
+                    try
+                    {
+                        var firmado = await _pdfSigningService.FirmarAsync(
+                            documento.Id, rutaPdf, directorioFirmados, certificado, cancellationToken);
+                        envio = (resumen.Version, await File.ReadAllBytesAsync(firmado.ArchivoFirmado, cancellationToken), Guid.NewGuid());
+                        _enviosPendientes[documento.Id] = envio;
+                    }
+                    finally { File.Delete(rutaPdf); }
+                }
+                await _documentosApiClient.EnviarPdfFirmadoAsync(resumen, envio.Pdf, envio.Clave, cancellationToken);
+                _enviosPendientes.Remove(documento.Id);
+                resultados.Add($"Documento {documento.Id}: recibido por la API.");
+            }
+            catch (Exception ex) { resultados.Add($"Documento {documento.Id}: {ex.Message}"); }
         }
 
         return resultados;
     }
 
-    private static string ConstruirMensajeFirmas(IReadOnlyCollection<FirmaDocumentoResultado> resultados)
+    private static string ConstruirMensajeFirmas(IReadOnlyCollection<string> resultados)
     {
-        var lineas = resultados
-            .Select(resultado =>
-                $"Documento {resultado.DocumentoId}: {Path.GetFileName(resultado.ArchivoFirmado)}")
-            .ToList();
-
-        return "Documentos firmados correctamente.\n\n" + string.Join('\n', lineas);
+        return string.Join('\n', resultados);
     }
 
     private async void btnPaginaAnterior_Click(object sender, EventArgs e)
@@ -381,6 +396,7 @@ public partial class MainForm : Form
                 "Firmar",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+            await CargarPaginaAsync(_paginaActual?.PageNumber ?? 1);
         }
         catch (Exception ex)
         {
@@ -419,7 +435,7 @@ public partial class MainForm : Form
         }
     }
 
-    private void dgvDocumentos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    private async void dgvDocumentos_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0 || e.ColumnIndex != colVerPdf.Index)
         {
@@ -433,16 +449,9 @@ public partial class MainForm : Form
 
         try
         {
-            var rutaPdf = _solutionPaths.ObtenerRutaDocumentoPdf(documento.Id);
-            if (!File.Exists(rutaPdf))
-            {
-                MessageBox.Show(
-                    $"No se encontro el archivo {documento.Id}.pdf en la carpeta docs.",
-                    "Ver PDF",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
+            var resumen = ObtenerResumen(documento.Id);
+            var pdf = await _documentosApiClient.DescargarPdfAsync(resumen);
+            var rutaPdf = GuardarPdfTemporal(resumen, pdf);
 
             Process.Start(new ProcessStartInfo
             {
@@ -458,6 +467,19 @@ public partial class MainForm : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
+    }
+
+    private DocumentoResumen ObtenerResumen(int id) =>
+        _paginaActual?.Items.FirstOrDefault(item => item.Id == id)
+        ?? throw new InvalidOperationException("El documento ya no está en la página actual. Busque nuevamente.");
+
+    private static string GuardarPdfTemporal(DocumentoResumen documento, byte[] pdf)
+    {
+        var carpeta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Firmador", "temporales");
+        Directory.CreateDirectory(carpeta);
+        var ruta = Path.Combine(carpeta, $"{documento.Id}-{documento.Hash}.pdf");
+        File.WriteAllBytes(ruta, pdf);
+        return ruta;
     }
 
     private void lblTotalDocumentos_Click(object sender, EventArgs e)

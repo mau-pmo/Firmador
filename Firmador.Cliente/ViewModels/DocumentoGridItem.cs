@@ -7,4 +7,5 @@ public sealed class DocumentoGridItem
     public string TipoDocumento { get; init; } = string.Empty;
     public string Titulo { get; init; } = string.Empty;
     public string Hash { get; init; } = string.Empty;
+    public string Version { get; init; } = string.Empty;
 }
