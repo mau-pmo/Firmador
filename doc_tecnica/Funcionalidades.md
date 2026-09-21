@@ -11,6 +11,7 @@ La aplicación realiza el login del usuario, con usuario y contraseña, contra u
 
 - En caso de no estar autorizado, informa al usuario.
 - En caso de estar autorizado, permite ingresar al `MainForm`.
+- Si el refresh token vence o deja de ser válido, descarta la sesión y vuelve a mostrar el login para solicitar nuevamente las credenciales.
 
 ### 2. Buscar documentos a firmar
 
