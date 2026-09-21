@@ -23,6 +23,7 @@ internal static class Program
         try
         {
             var url = Environment.GetEnvironmentVariable("FIRMADOR_API_BASE_URL");
+            var tsaUrl = Environment.GetEnvironmentVariable("TSA_URL");
             var configuracion = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
             using var json = JsonDocument.Parse(File.ReadAllText(configuracion));
             var permitirHttpDePrueba = json.RootElement.TryGetProperty("AllowInsecureHttp", out var opcionHttp)
@@ -33,6 +34,14 @@ internal static class Program
             }
             if (string.IsNullOrWhiteSpace(url))
                 throw new InvalidOperationException("Configure ApiBaseUrl en appsettings.json o FIRMADOR_API_BASE_URL antes de iniciar.");
+            if (string.IsNullOrWhiteSpace(tsaUrl))
+            {
+                tsaUrl = json.RootElement.TryGetProperty("TsaUrl", out var opcionTsa)
+                    ? opcionTsa.GetString()
+                    : null;
+            }
+            if (string.IsNullOrWhiteSpace(tsaUrl))
+                throw new InvalidOperationException("Configure TsaUrl en appsettings.json o TSA_URL antes de iniciar.");
 
             using var api = new FirmadorApiClient(url, permitirHttpDePrueba);
             while (true)
@@ -49,7 +58,7 @@ internal static class Program
                     MessageBox.Show(ex.Message, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            Application.Run(new MainForm(api, new CertificateSelectorService(), new WindowsPdfSigningService(), new SolutionPaths()));
+            Application.Run(new MainForm(api, new CertificateSelectorService(), new WindowsPdfSigningService(tsaUrl), new SolutionPaths()));
             try { api.CerrarSesionAsync().GetAwaiter().GetResult(); }
             catch { /* La sesión local se descarta aunque falle la revocación remota. */ }
         }

@@ -42,5 +42,6 @@ La aplicación valida que haya al menos un documento seleccionado en la tabla. L
 - Debe pedir al usuario que seleccione el certificado con el cual se va a firmar.
 - El certificado debe provenir de un token USB conectado.
 - Una vez seleccionado, se aplica la firma.
+- La firma incorpora un sello de tiempo emitido por la TSA configurada.
 - En `MainForm` se debe mostrar el certificado seleccionado.
 - No se debe volver a pedir el certificado hasta que se cierre el programa.
