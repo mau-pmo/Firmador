@@ -18,6 +18,18 @@ public sealed class WindowsPdfSigningService : IFirmaPdfService
     private const float SignatureHeight = 56;
     private const float SignatureMargin = 36;
     private const float SignatureGap = 8;
+    private readonly string _tsaUrl;
+
+    public WindowsPdfSigningService(string tsaUrl)
+    {
+        if (!Uri.TryCreate(tsaUrl, UriKind.Absolute, out var uri)
+            || (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
+        {
+            throw new ArgumentException("La URL de la TSA debe ser una direccion HTTP o HTTPS absoluta.", nameof(tsaUrl));
+        }
+
+        _tsaUrl = uri.AbsoluteUri;
+    }
 
     public async Task<FirmaDocumentoResultado> FirmarAsync(
         int documentoId,
@@ -53,13 +65,14 @@ public sealed class WindowsPdfSigningService : IFirmaPdfService
 
         var firma = new WindowsCertificateSignature(certificado);
         var cadena = CrearCadenaCertificados(certificado);
+        var tsaClient = new TSAClientBouncyCastle(_tsaUrl);
 
         signer.SignDetached(
             firma,
             cadena,
             crlList: null,
             ocspClient: null,
-            tsaClient: null,
+            tsaClient,
             estimatedSize: 0,
             sigtype: PdfSigner.CryptoStandard.CADES);
 
