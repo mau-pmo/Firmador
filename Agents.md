@@ -14,6 +14,7 @@
 - `doc_tecnica`: documentacion funcional y tecnica del proyecto.
 - `doc_tecnica/Funcionalidades.md`: descripcion funcional y flujo general de Firmador.
 - `doc_tecnica/Especificacion-Integracion-API-Firmador.md`: fuente versionable del contrato propuesto con el backend web.
+- `doc_tecnica/04-firmador-api.md`: definicion de las APIs efectivamente implementadas por el equipo web para la primera integracion; consultar endpoints, campos, errores y diferencias respecto de la propuesta antes de modificar el cliente HTTP.
 - `doc_tecnica/Especificacion-Integracion-API-Firmador.docx`: copia presentable del mismo contrato para compartir con el equipo web; debe mantenerse sincronizada con el Markdown.
 - `docs`: exclusivamente PDFs de prueba que se copian al output del cliente.
 
@@ -29,7 +30,7 @@
 
 - Preferir cambios chicos y coherentes con la arquitectura actual: UI en `Firmador.Cliente`, contratos en `Core`, integraciones/API en `Firmador.ApiClient`.
 - Antes de trabajar sobre funcionalidades, consultar `doc_tecnica/Funcionalidades.md`.
-- Antes de disenar o implementar la integracion web, consultar `doc_tecnica/Especificacion-Integracion-API-Firmador.md` y tratar el Markdown como fuente principal.
+- Antes de disenar o implementar la integracion web, consultar `doc_tecnica/Especificacion-Integracion-API-Firmador.md` como propuesta original y `doc_tecnica/04-firmador-api.md` como contrato de la primera version implementada. Para las llamadas reales prevalece este ultimo cuando difieran.
 - No meter logica de firma dentro del formulario si puede quedar en servicios.
 - Cuidar compatibilidad Windows y WinForms; la app depende del almacen de certificados de Windows y de tokens USB expuestos como certificados con clave privada.
 - Evitar recorrer o modificar los PDFs de `docs` salvo que la tarea lo pida.

@@ -13,5 +13,6 @@
 
   <ItemGroup>
     <Content Include="..\docs\*.pdf" Link="docs\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

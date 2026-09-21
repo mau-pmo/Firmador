@@ -6,4 +6,5 @@ public sealed class DocumentoResumen
     public required string TipoDocumento { get; init; }
     public required string Titulo { get; init; }
     public required string Hash { get; init; }
+    public string Version { get; init; } = string.Empty;
 }
