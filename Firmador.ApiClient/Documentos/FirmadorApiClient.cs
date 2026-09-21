@@ -136,7 +136,7 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
         await _renovacion.WaitAsync(cancellationToken);
         try
         {
-            if (_refreshToken is null) throw new InvalidOperationException("La sesión terminó. Inicie sesión nuevamente.");
+            if (_refreshToken is null) throw new SesionExpiradaException();
             if (forzar && tokenAnterior != _accessToken) return;
             if (!forzar && DateTimeOffset.UtcNow < _accessExpiresAt.AddSeconds(-30)) return;
             using var respuesta = await _http.PostAsJsonAsync("api/v1/sessions/refresh", new { refreshToken = _refreshToken }, cancellationToken);
@@ -146,6 +146,12 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
                 var sesion = await respuesta.Content.ReadFromJsonAsync<SessionResponse>(JsonOptions, cancellationToken)
                     ?? throw new InvalidDataException("La API devolvió una renovación vacía.");
                 GuardarTokens(sesion);
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _accessToken = null;
+                _refreshToken = null;
+                throw new SesionExpiradaException(ex);
             }
             catch { _accessToken = null; _refreshToken = null; throw; }
         }

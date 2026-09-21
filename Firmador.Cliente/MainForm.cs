@@ -24,16 +24,21 @@ public partial class MainForm : Form
     private X509Certificate2? _certificadoSeleccionado;
     private readonly Dictionary<int, (string Version, byte[] Pdf, Guid Clave)> _enviosPendientes = [];
 
+    public bool SesionExpirada { get; private set; }
+    public X509Certificate2? CertificadoSeleccionado => _certificadoSeleccionado;
+
     public MainForm(
         IFirmadorApiClient documentosApiClient,
         CertificateSelectorService certificateSelectorService,
         IFirmaPdfService pdfSigningService,
-        SolutionPaths solutionPaths)
+        SolutionPaths solutionPaths,
+        X509Certificate2? certificadoSeleccionado = null)
     {
         _documentosApiClient = documentosApiClient;
         _certificateSelectorService = certificateSelectorService;
         _pdfSigningService = pdfSigningService;
         _solutionPaths = solutionPaths;
+        _certificadoSeleccionado = certificadoSeleccionado;
 
         InitializeComponent();
         ConfigurarBotonBuscar();
@@ -126,6 +131,10 @@ public partial class MainForm : Form
             _busquedaRealizada = true;
             ActualizarGrilla();
             ActualizarPaginacion();
+        }
+        catch (SesionExpiradaException)
+        {
+            VolverAlLogin();
         }
         catch (Exception ex)
         {
@@ -316,6 +325,7 @@ public partial class MainForm : Form
                 _enviosPendientes.Remove(documento.Id);
                 resultados.Add($"Documento {documento.Id}: recibido por la API.");
             }
+            catch (SesionExpiradaException) { throw; }
             catch (Exception ex) { resultados.Add($"Documento {documento.Id}: {ex.Message}"); }
         }
 
@@ -398,6 +408,10 @@ public partial class MainForm : Form
                 MessageBoxIcon.Information);
             await CargarPaginaAsync(_paginaActual?.PageNumber ?? 1);
         }
+        catch (SesionExpiradaException)
+        {
+            VolverAlLogin();
+        }
         catch (Exception ex)
         {
             MessageBox.Show(
@@ -459,6 +473,10 @@ public partial class MainForm : Form
                 UseShellExecute = true
             });
         }
+        catch (SesionExpiradaException)
+        {
+            VolverAlLogin();
+        }
         catch (Exception ex)
         {
             MessageBox.Show(
@@ -480,6 +498,22 @@ public partial class MainForm : Form
         var ruta = Path.Combine(carpeta, $"{documento.Id}-{documento.Hash}.pdf");
         File.WriteAllBytes(ruta, pdf);
         return ruta;
+    }
+
+    private void VolverAlLogin()
+    {
+        if (SesionExpirada)
+        {
+            return;
+        }
+
+        SesionExpirada = true;
+        MessageBox.Show(
+            "La sesión venció. Inicie sesión nuevamente.",
+            "Sesión vencida",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
+        Close();
     }
 
     private void lblTotalDocumentos_Click(object sender, EventArgs e)

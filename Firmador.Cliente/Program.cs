@@ -1,5 +1,6 @@
 using Firmador.ApiClient.Documentos;
 using System.Text.Json;
+using System.Security.Cryptography.X509Certificates;
 using Firmador.Cliente.Services;
 using Firmador.Core.Firma;
 
@@ -44,23 +45,42 @@ internal static class Program
                 throw new InvalidOperationException("Configure TsaUrl en appsettings.json o TSA_URL antes de iniciar.");
 
             using var api = new FirmadorApiClient(url, permitirHttpDePrueba);
+            X509Certificate2? certificadoSeleccionado = null;
             while (true)
             {
-                using var login = new LoginForm();
-                if (login.ShowDialog() != DialogResult.OK) return;
-                try
+                while (true)
                 {
-                    api.IniciarSesionAsync(login.Usuario, login.Contrasena).GetAwaiter().GetResult();
-                    break;
+                    using var login = new LoginForm();
+                    if (login.ShowDialog() != DialogResult.OK) return;
+                    try
+                    {
+                        api.IniciarSesionAsync(login.Usuario, login.Contrasena).GetAwaiter().GetResult();
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch (Exception ex)
+
+                using var mainForm = new MainForm(
+                    api,
+                    new CertificateSelectorService(),
+                    new WindowsPdfSigningService(tsaUrl),
+                    new SolutionPaths(),
+                    certificadoSeleccionado);
+                Application.Run(mainForm);
+                certificadoSeleccionado = mainForm.CertificadoSeleccionado;
+
+                if (mainForm.SesionExpirada)
                 {
-                    MessageBox.Show(ex.Message, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    continue;
                 }
+
+                try { api.CerrarSesionAsync().GetAwaiter().GetResult(); }
+                catch { /* La sesión local se descarta aunque falle la revocación remota. */ }
+                return;
             }
-            Application.Run(new MainForm(api, new CertificateSelectorService(), new WindowsPdfSigningService(tsaUrl), new SolutionPaths()));
-            try { api.CerrarSesionAsync().GetAwaiter().GetResult(); }
-            catch { /* La sesión local se descarta aunque falle la revocación remota. */ }
         }
         catch (Exception ex)
         {
