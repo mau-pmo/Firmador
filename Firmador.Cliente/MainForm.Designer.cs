@@ -86,7 +86,7 @@
             dgvDocumentos.AllowUserToResizeRows = false;
             dgvDocumentos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvDocumentos.AutoGenerateColumns = false;
-            dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvDocumentos.BackgroundColor = SystemColors.Window;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf });
@@ -104,10 +104,10 @@
             // colSeleccionar
             // 
             colSeleccionar.DataPropertyName = "Seleccionado";
-            colSeleccionar.FillWeight = 35F;
             colSeleccionar.HeaderText = "";
             colSeleccionar.MinimumWidth = 8;
             colSeleccionar.Name = "colSeleccionar";
+            colSeleccionar.Width = 50;
             // 
             // colTipoDocumento
             // 
@@ -116,9 +116,11 @@
             colTipoDocumento.MinimumWidth = 8;
             colTipoDocumento.Name = "colTipoDocumento";
             colTipoDocumento.ReadOnly = true;
+            colTipoDocumento.Width = 250;
             // 
             // colTitulo
             // 
+            colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             colTitulo.DataPropertyName = "Titulo";
             colTitulo.HeaderText = "Título";
             colTitulo.MinimumWidth = 8;
@@ -127,12 +129,12 @@
             // 
             // colVerPdf
             // 
-            colVerPdf.FillWeight = 85F;
             colVerPdf.HeaderText = "";
             colVerPdf.MinimumWidth = 8;
             colVerPdf.Name = "colVerPdf";
             colVerPdf.Text = "Ver PDF";
             colVerPdf.UseColumnTextForButtonValue = true;
+            colVerPdf.Width = 100;
             // 
             // btnPaginaAnterior
             // 
