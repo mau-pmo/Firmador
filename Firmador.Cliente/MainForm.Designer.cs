@@ -251,7 +251,7 @@
             Controls.Add(btnFirmarDocumentos);
             Controls.Add(btnBuscar);
             Name = "MainForm";
-            Text = "Firmador";
+            Text = "Firmador Cliente EDA";
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();
             ResumeLayout(false);
             PerformLayout();
