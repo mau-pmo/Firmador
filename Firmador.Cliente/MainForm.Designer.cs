@@ -32,6 +32,9 @@
             btnFirmarDocumentos = new Button();
             btnSalir = new Button();
             dgvDocumentos = new DataGridView();
+            colSeleccionar = new DataGridViewCheckBoxColumn();
+            colTipoDocumento = new DataGridViewTextBoxColumn();
+            colTitulo = new DataGridViewTextBoxColumn();
             colVerPdf = new DataGridViewButtonColumn();
             btnPaginaAnterior = new Button();
             btnPaginaSiguiente = new Button();
@@ -82,10 +85,11 @@
             dgvDocumentos.AllowUserToDeleteRows = false;
             dgvDocumentos.AllowUserToResizeRows = false;
             dgvDocumentos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDocumentos.AutoGenerateColumns = false;
+            dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvDocumentos.BackgroundColor = SystemColors.Window;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colVerPdf });
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf });
             dgvDocumentos.Location = new Point(24, 168);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
@@ -97,14 +101,40 @@
             dgvDocumentos.CellContentClick += dgvDocumentos_CellContentClick;
             dgvDocumentos.CurrentCellDirtyStateChanged += dgvDocumentos_CurrentCellDirtyStateChanged;
             // 
+            // colSeleccionar
+            // 
+            colSeleccionar.DataPropertyName = "Seleccionado";
+            colSeleccionar.HeaderText = "";
+            colSeleccionar.MinimumWidth = 8;
+            colSeleccionar.Name = "colSeleccionar";
+            colSeleccionar.Width = 50;
+            // 
+            // colTipoDocumento
+            // 
+            colTipoDocumento.DataPropertyName = "TipoDocumento";
+            colTipoDocumento.HeaderText = "Tipo de Documento";
+            colTipoDocumento.MinimumWidth = 8;
+            colTipoDocumento.Name = "colTipoDocumento";
+            colTipoDocumento.ReadOnly = true;
+            colTipoDocumento.Width = 250;
+            // 
+            // colTitulo
+            // 
+            colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colTitulo.DataPropertyName = "Titulo";
+            colTitulo.HeaderText = "Título";
+            colTitulo.MinimumWidth = 8;
+            colTitulo.Name = "colTitulo";
+            colTitulo.ReadOnly = true;
+            // 
             // colVerPdf
             // 
-            colVerPdf.FillWeight = 85F;
             colVerPdf.HeaderText = "";
             colVerPdf.MinimumWidth = 8;
             colVerPdf.Name = "colVerPdf";
             colVerPdf.Text = "Ver PDF";
             colVerPdf.UseColumnTextForButtonValue = true;
+            colVerPdf.Width = 100;
             // 
             // btnPaginaAnterior
             // 
@@ -221,7 +251,7 @@
             Controls.Add(btnFirmarDocumentos);
             Controls.Add(btnBuscar);
             Name = "MainForm";
-            Text = "Firmador";
+            Text = "Firmador Cliente EDA";
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -234,7 +264,6 @@
         private Button btnSalir;
         private DataGridView dgvDocumentos;
         private DataGridViewCheckBoxColumn colSeleccionar;
-        private DataGridViewTextBoxColumn colId;
         private DataGridViewTextBoxColumn colTipoDocumento;
         private DataGridViewTextBoxColumn colTitulo;
         private DataGridViewButtonColumn colVerPdf;
