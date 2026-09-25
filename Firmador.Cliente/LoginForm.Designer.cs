@@ -76,7 +76,6 @@ namespace Firmador.Cliente
             // 
             // btnIngresar
             // 
-            btnIngresar.DialogResult = DialogResult.OK;
             btnIngresar.Location = new Point(162, 169);
             btnIngresar.Margin = new Padding(4);
             btnIngresar.Name = "btnIngresar";

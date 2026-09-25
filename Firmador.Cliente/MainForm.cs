@@ -136,6 +136,10 @@ public partial class MainForm : Form
         {
             VolverAlLogin();
         }
+        catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex))
+        {
+            MessageBox.Show(ErroresConexion.Mensaje, "Buscar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         catch (Exception ex)
         {
             MessageBox.Show($"No fue posible buscar documentos.\n\n{ex.Message}", "Buscar", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -326,6 +330,7 @@ public partial class MainForm : Form
                 resultados.Add($"Documento {documento.Id}: recibido por la API.");
             }
             catch (SesionExpiradaException) { throw; }
+            catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex)) { throw; }
             catch (Exception ex) { resultados.Add($"Documento {documento.Id}: {ex.Message}"); }
         }
 
@@ -412,6 +417,10 @@ public partial class MainForm : Form
         {
             VolverAlLogin();
         }
+        catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex))
+        {
+            MessageBox.Show(ErroresConexion.Mensaje, "Firmar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         catch (Exception ex)
         {
             MessageBox.Show(
@@ -476,6 +485,10 @@ public partial class MainForm : Form
         catch (SesionExpiradaException)
         {
             VolverAlLogin();
+        }
+        catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex))
+        {
+            MessageBox.Show(ErroresConexion.Mensaje, "Ver PDF", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         catch (Exception ex)
         {
