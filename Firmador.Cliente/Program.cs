@@ -57,6 +57,10 @@ internal static class Program
                         api.IniciarSesionAsync(login.Usuario, login.Contrasena).GetAwaiter().GetResult();
                         break;
                     }
+                    catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex))
+                    {
+                        MessageBox.Show(ErroresConexion.Mensaje, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
