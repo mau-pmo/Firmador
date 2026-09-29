@@ -328,7 +328,7 @@ public partial class MainForm : Form
                 }
                 await _documentosApiClient.EnviarPdfFirmadoAsync(resumen, envio.Pdf, envio.Clave, cancellationToken);
                 _enviosPendientes.Remove(documento.Id);
-                resultados.Add($"Documento {documento.Id}: recibido por la API.");
+                resultados.Add($"Documento {documento.Id}: recibido por el sistema web.");
             }
             catch (SesionExpiradaException) { throw; }
             catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex)) { throw; }
