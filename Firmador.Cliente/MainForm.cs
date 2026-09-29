@@ -316,7 +316,16 @@ public partial class MainForm : Form
                 if (!_enviosPendientes.TryGetValue(documento.Id, out var envio) || envio.Version != resumen.Version)
                 {
                     var pdf = await _documentosApiClient.DescargarPdfAsync(resumen, cancellationToken);
-                    var rutaPdf = GuardarPdfTemporal(resumen, pdf);
+                    string rutaPdf;
+                    try
+                    {
+                        rutaPdf = GuardarPdfTemporal(resumen, pdf);
+                    }
+                    catch (IOException ex) when (EsPdfTemporalBloqueado(ex))
+                    {
+                        resultados.Add($"Documento {documento.Id}: No se pudo firmar. Cierre el PDF del documento y vuelva a intentar");
+                        continue;
+                    }
                     try
                     {
                         var firmado = await _pdfSigningService.FirmarAsync(
@@ -350,6 +359,10 @@ public partial class MainForm : Form
     {
         return string.Join("\n\n", resultados);
     }
+
+    private static bool EsPdfTemporalBloqueado(IOException exception) =>
+        exception.HResult == unchecked((int)0x80070020) || // ERROR_SHARING_VIOLATION
+        exception.HResult == unchecked((int)0x80070021);   // ERROR_LOCK_VIOLATION
 
     private static string ConstruirMensajeDocumentoModificado(DocumentoGridItem documento) =>
         $"No se pudo firmar el documento {documento.Id} ya que ha sido modificado. " +
