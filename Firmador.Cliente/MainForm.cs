@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Firmador.ApiClient.Abstractions;
 using Firmador.Cliente.Services;
@@ -331,6 +332,14 @@ public partial class MainForm : Form
             }
             catch (SesionExpiradaException) { throw; }
             catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex)) { throw; }
+            catch (HashDocumentoNoCoincideException)
+            {
+                resultados.Add(ConstruirMensajeDocumentoModificado(documento));
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.PreconditionFailed)
+            {
+                resultados.Add(ConstruirMensajeDocumentoModificado(documento));
+            }
             catch (Exception ex) { resultados.Add($"Documento {documento.Id}: {ex.Message}"); }
         }
 
@@ -339,8 +348,12 @@ public partial class MainForm : Form
 
     private static string ConstruirMensajeFirmas(IReadOnlyCollection<string> resultados)
     {
-        return string.Join('\n', resultados);
+        return string.Join("\n\n", resultados);
     }
+
+    private static string ConstruirMensajeDocumentoModificado(DocumentoGridItem documento) =>
+        $"No se pudo firmar el documento {documento.Id} ya que ha sido modificado. " +
+        "Por favor vuelva a buscar la lista de documentos a firmar.";
 
     private async void btnPaginaAnterior_Click(object sender, EventArgs e)
     {
