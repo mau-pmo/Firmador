@@ -35,48 +35,49 @@ namespace Firmador.Cliente
             _contrasena = new TextBox();
             btnIngresar = new Button();
             btnCancelar = new Button();
+            lblIngreseCredenciales = new Label();
             SuspendLayout();
             // 
             // lblUsuario
             // 
             lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(31, 19);
+            lblUsuario.Location = new Point(65, 103);
             lblUsuario.Margin = new Padding(4, 0, 4, 0);
             lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(72, 25);
+            lblUsuario.Size = new Size(76, 25);
             lblUsuario.TabIndex = 0;
-            lblUsuario.Text = "Usuario";
+            lblUsuario.Text = "Usuario:";
             // 
             // _usuario
             // 
-            _usuario.Location = new Point(31, 50);
+            _usuario.Location = new Point(65, 134);
             _usuario.Margin = new Padding(4);
             _usuario.Name = "_usuario";
-            _usuario.Size = new Size(369, 31);
+            _usuario.Size = new Size(465, 31);
             _usuario.TabIndex = 1;
             // 
             // lblContrasena
             // 
             lblContrasena.AutoSize = true;
-            lblContrasena.Location = new Point(31, 94);
+            lblContrasena.Location = new Point(65, 190);
             lblContrasena.Margin = new Padding(4, 0, 4, 0);
             lblContrasena.Name = "lblContrasena";
-            lblContrasena.Size = new Size(101, 25);
+            lblContrasena.Size = new Size(105, 25);
             lblContrasena.TabIndex = 2;
-            lblContrasena.Text = "Contraseña";
+            lblContrasena.Text = "Contraseña:";
             // 
             // _contrasena
             // 
-            _contrasena.Location = new Point(31, 125);
+            _contrasena.Location = new Point(65, 221);
             _contrasena.Margin = new Padding(4);
             _contrasena.Name = "_contrasena";
-            _contrasena.Size = new Size(369, 31);
+            _contrasena.Size = new Size(465, 31);
             _contrasena.TabIndex = 3;
             _contrasena.UseSystemPasswordChar = true;
             // 
             // btnIngresar
             // 
-            btnIngresar.Location = new Point(162, 169);
+            btnIngresar.Location = new Point(294, 301);
             btnIngresar.Margin = new Padding(4);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(112, 36);
@@ -87,13 +88,23 @@ namespace Firmador.Cliente
             // btnCancelar
             // 
             btnCancelar.DialogResult = DialogResult.Cancel;
-            btnCancelar.Location = new Point(288, 169);
+            btnCancelar.Location = new Point(420, 301);
             btnCancelar.Margin = new Padding(4);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(112, 36);
             btnCancelar.TabIndex = 5;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            // 
+            // lblIngreseCredenciales
+            // 
+            lblIngreseCredenciales.AutoSize = true;
+            lblIngreseCredenciales.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
+            lblIngreseCredenciales.Location = new Point(65, 40);
+            lblIngreseCredenciales.Name = "lblIngreseCredenciales";
+            lblIngreseCredenciales.Size = new Size(413, 25);
+            lblIngreseCredenciales.TabIndex = 6;
+            lblIngreseCredenciales.Text = "Por favor ingrese sus credenciales de acceso al EDA";
             // 
             // LoginForm
             // 
@@ -102,7 +113,8 @@ namespace Firmador.Cliente
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             CancelButton = btnCancelar;
-            ClientSize = new Size(475, 263);
+            ClientSize = new Size(690, 390);
+            Controls.Add(lblIngreseCredenciales);
             Controls.Add(btnCancelar);
             Controls.Add(btnIngresar);
             Controls.Add(_contrasena);
@@ -115,7 +127,7 @@ namespace Firmador.Cliente
             MinimizeBox = false;
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Iniciar sesión - Firmador";
+            Text = "Iniciar sesión - Firmador Cliente EDA";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -128,5 +140,6 @@ namespace Firmador.Cliente
         private TextBox _contrasena;
         private Button btnIngresar;
         private Button btnCancelar;
+        private Label lblIngreseCredenciales;
     }
 }
