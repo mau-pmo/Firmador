@@ -33,6 +33,17 @@ Los datos se muestran en una tabla, ocultando el id y el hash. La tabla queda co
 - Tipo de documento, visible
 - Título, visible
 - Botón `Ver documento`, visible
+- Botón `Ver participantes`, visible
+
+#### Ver participantes
+
+El botón `Ver participantes` de cada fila abre una ventana modal centrada sobre Firmador con el título del documento y las secciones Creador, Editor, Revisores y Firmantes. No requiere seleccionar el documento con el checkbox.
+
+La ventana consulta `GET /api/v1/documents/{id}/participants` en cada apertura, muestra un indicador de carga y permite cerrar o reintentar ante errores. Cerrar durante la carga cancela la consulta; si la sesión vence, vuelve al login.
+
+Los revisores y firmantes se muestran por `orden`, con su estado y, cuando corresponda, la fecha de revisión o firma en formato `d/M/yyyy`, conservando el huso horario recibido. Los pendientes se muestran como `pendiente`; las revisiones y firmas sin fecha indican `fecha no informada`. Otros estados se muestran tal como llegan de la API.
+
+Cuando falta el creador o editor se muestra `No informado`; las listas vacías indican `Sin revisores` o `Sin firmantes`. La ventana admite nombres largos y desplazamiento para listas extensas.
 
 ### 3. Firmar
 

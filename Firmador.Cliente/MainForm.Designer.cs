@@ -36,6 +36,7 @@
             colTipoDocumento = new DataGridViewTextBoxColumn();
             colTitulo = new DataGridViewTextBoxColumn();
             colVerPdf = new DataGridViewButtonColumn();
+            colVerParticipantes = new DataGridViewButtonColumn();
             btnPaginaAnterior = new Button();
             btnPaginaSiguiente = new Button();
             lblPagina = new Label();
@@ -89,7 +90,7 @@
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvDocumentos.BackgroundColor = SystemColors.Window;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf });
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf, colVerParticipantes });
             dgvDocumentos.Location = new Point(24, 168);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
@@ -135,6 +136,15 @@
             colVerPdf.Text = "Ver PDF";
             colVerPdf.UseColumnTextForButtonValue = true;
             colVerPdf.Width = 100;
+            //
+            // colVerParticipantes
+            //
+            colVerParticipantes.HeaderText = "Ver participantes";
+            colVerParticipantes.Name = "colVerParticipantes";
+            colVerParticipantes.Text = "Ver participantes";
+            colVerParticipantes.ReadOnly = true;
+            colVerParticipantes.UseColumnTextForButtonValue = true;
+            colVerParticipantes.Width = 180;
             // 
             // btnPaginaAnterior
             // 
@@ -267,6 +277,7 @@
         private DataGridViewTextBoxColumn colTipoDocumento;
         private DataGridViewTextBoxColumn colTitulo;
         private DataGridViewButtonColumn colVerPdf;
+        private DataGridViewButtonColumn colVerParticipantes;
         private Button btnPaginaAnterior;
         private Button btnPaginaSiguiente;
         private Label lblPagina;

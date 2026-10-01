@@ -486,13 +486,21 @@ public partial class MainForm : Form
 
     private async void dgvDocumentos_CellContentClick(object sender, DataGridViewCellEventArgs e)
     {
-        if (e.RowIndex < 0 || e.ColumnIndex != colVerPdf.Index)
+        if (e.RowIndex < 0 || (e.ColumnIndex != colVerPdf.Index && e.ColumnIndex != colVerParticipantes.Index))
         {
             return;
         }
 
         if (dgvDocumentos.Rows[e.RowIndex].DataBoundItem is not DocumentoGridItem documento)
         {
+            return;
+        }
+
+        if (e.ColumnIndex == colVerParticipantes.Index)
+        {
+            using var participantes = new ParticipantesForm(_documentosApiClient, documento.Id, documento.Titulo);
+            participantes.ShowDialog(this);
+            if (participantes.SesionExpirada) VolverAlLogin();
             return;
         }
 
