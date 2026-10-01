@@ -68,7 +68,7 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
         var bytes = await respuesta.Content.ReadAsByteArrayAsync(cancellationToken);
         var hash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
         if (!hash.Equals(documento.Hash, StringComparison.OrdinalIgnoreCase))
-            throw new InvalidDataException($"El PDF del documento {documento.Id} no coincide con el SHA-256 informado por la API.");
+            throw new HashDocumentoNoCoincideException(documento.Id);
         return bytes;
     }
 

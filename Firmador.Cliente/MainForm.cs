@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Firmador.ApiClient.Abstractions;
 using Firmador.Cliente.Services;
@@ -315,7 +316,16 @@ public partial class MainForm : Form
                 if (!_enviosPendientes.TryGetValue(documento.Id, out var envio) || envio.Version != resumen.Version)
                 {
                     var pdf = await _documentosApiClient.DescargarPdfAsync(resumen, cancellationToken);
-                    var rutaPdf = GuardarPdfTemporal(resumen, pdf);
+                    string rutaPdf;
+                    try
+                    {
+                        rutaPdf = GuardarPdfTemporal(resumen, pdf);
+                    }
+                    catch (IOException ex) when (EsPdfTemporalBloqueado(ex))
+                    {
+                        resultados.Add($"Documento {documento.Id}: No se pudo firmar. Cierre el PDF del documento y vuelva a intentar");
+                        continue;
+                    }
                     try
                     {
                         var firmado = await _pdfSigningService.FirmarAsync(
@@ -327,10 +337,18 @@ public partial class MainForm : Form
                 }
                 await _documentosApiClient.EnviarPdfFirmadoAsync(resumen, envio.Pdf, envio.Clave, cancellationToken);
                 _enviosPendientes.Remove(documento.Id);
-                resultados.Add($"Documento {documento.Id}: recibido por la API.");
+                resultados.Add($"Documento {documento.Id}: recibido por el sistema web.");
             }
             catch (SesionExpiradaException) { throw; }
             catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex)) { throw; }
+            catch (HashDocumentoNoCoincideException)
+            {
+                resultados.Add(ConstruirMensajeDocumentoModificado(documento));
+            }
+            catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.PreconditionFailed)
+            {
+                resultados.Add(ConstruirMensajeDocumentoModificado(documento));
+            }
             catch (Exception ex) { resultados.Add($"Documento {documento.Id}: {ex.Message}"); }
         }
 
@@ -339,8 +357,16 @@ public partial class MainForm : Form
 
     private static string ConstruirMensajeFirmas(IReadOnlyCollection<string> resultados)
     {
-        return string.Join('\n', resultados);
+        return string.Join("\n\n", resultados);
     }
+
+    private static bool EsPdfTemporalBloqueado(IOException exception) =>
+        exception.HResult == unchecked((int)0x80070020) || // ERROR_SHARING_VIOLATION
+        exception.HResult == unchecked((int)0x80070021);   // ERROR_LOCK_VIOLATION
+
+    private static string ConstruirMensajeDocumentoModificado(DocumentoGridItem documento) =>
+        $"No se pudo firmar el documento {documento.Id} ya que ha sido modificado. " +
+        "Por favor vuelva a buscar la lista de documentos a firmar.";
 
     private async void btnPaginaAnterior_Click(object sender, EventArgs e)
     {

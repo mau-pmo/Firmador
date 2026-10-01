@@ -1,4 +1,5 @@
 using Firmador.ApiClient.Documentos;
+using System.Net;
 using System.Text.Json;
 using System.Security.Cryptography.X509Certificates;
 using Firmador.Cliente.Services;
@@ -60,6 +61,10 @@ internal static class Program
                     catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex))
                     {
                         MessageBox.Show(ErroresConexion.Mensaje, "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        MessageBox.Show("Usuario o contraseña incorrectos", "Inicio de sesión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     catch (Exception ex)
                     {
