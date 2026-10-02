@@ -98,6 +98,27 @@ Revisores y firmantes se ordenan por `orden`, conservando el orden recibido ante
 
 La consulta reutiliza el manejo de errores HTTP y la renovación de sesión del cliente. Cada apertura consulta nuevamente el endpoint; cerrar la ventana cancela la solicitud y un error permite reintentar.
 
+#### Grupos de firmantes
+
+La lista `signers` puede combinar firmantes `individual` y `group`. Para individuales el nombre llega en `name`; para grupos llega en `nombre`, y sus integrantes en `miembros`:
+
+```json
+{
+  "orden": 2,
+  "nombre": "pyp",
+  "status": "signed",
+  "type": "group",
+  "miembros": [
+    { "status": "signed", "firmadoAt": "2026-10-02T10:00:00-03:00", "name": "Amolio Nancy Viviana" },
+    { "status": "pending", "firmadoAt": null, "name": "DeLeon Sebastian" }
+  ]
+}
+```
+
+El estado del grupo es la autoridad; `signed` es válido aunque solo algunos integrantes hayan firmado. El cliente antepone el texto fijo `Grupo: ` al nombre y muestra `Grupo: pyp — firmado por: Amolio Nancy Viviana` para este ejemplo, filtrando exclusivamente integrantes con `status: signed` y conservando su orden. Para `status: pending` muestra `Grupo: pyp — pendiente`, aun si hay integrantes firmados. Otros estados se muestran literalmente.
+
+`miembros` ausente o nulo se trata como una lista vacía. Un grupo `signed` sin integrantes firmados muestra `Grupo: nombre — firmado — firmantes no informados`. Nombres ausentes se muestran como `No informado`. Las fechas de los integrantes se conservan en el modelo pero no se muestran en el resumen del grupo.
+
 ---
 
 ## 4) Modelo de datos y storage

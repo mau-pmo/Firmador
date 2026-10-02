@@ -72,7 +72,12 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
             (participantes.Reviewers ?? []).Select(item => new RevisorDocumento(
                 item.Orden, item.Status, item.RevisadoAt, item.Name)).ToArray(),
             (participantes.Signers ?? []).Select(item => new FirmanteDocumento(
-                item.Orden, item.Status, item.FirmadoAt, item.Type, item.Name)).ToArray());
+                item.Orden, item.Status, item.FirmadoAt, item.Type,
+                item.Type == "group" ? item.Nombre : item.Name)
+            {
+                Miembros = (item.Miembros ?? []).Select(miembro => new MiembroGrupoFirmante(
+                    miembro.Name, miembro.Status, miembro.FirmadoAt)).ToArray()
+            }).ToArray());
     }
 
     public async Task<byte[]> DescargarPdfAsync(DocumentoResumen documento, CancellationToken cancellationToken = default)
@@ -210,5 +215,7 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
     private sealed record ParticipantDocument(int Id);
     private sealed record ParticipantName(string? Name);
     private sealed record ReviewerResponse(int Orden, string? Status, DateTimeOffset? RevisadoAt, string? Name);
-    private sealed record SignerResponse(int Orden, string? Status, DateTimeOffset? FirmadoAt, string? Type, string? Name);
+    private sealed record SignerResponse(int Orden, string? Status, DateTimeOffset? FirmadoAt, string? Type,
+        string? Name, string? Nombre, List<GroupMemberResponse>? Miembros);
+    private sealed record GroupMemberResponse(string? Name, string? Status, DateTimeOffset? FirmadoAt);
 }

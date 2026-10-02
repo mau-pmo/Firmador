@@ -110,13 +110,26 @@ public sealed class ParticipantesForm : Form
             AgregarSeccion("Firmantes", participantes.Firmantes.Count == 0
                 ? ["Sin firmantes"]
                 : participantes.Firmantes.OrderBy(p => p.Orden).Select(p =>
-                    $"{Nombre(p.Nombre)} — {Estado(p.Estado, "signed", "firmado", p.FirmadoAt)}"));
+                    $"{(p.Tipo == "group" ? "Grupo: " : string.Empty)}{Nombre(p.Nombre)} — {EstadoFirmante(p)}"));
         }
         finally { _contenido.ResumeLayout(true); }
         _desplazamiento.AutoScrollPosition = Point.Empty;
     }
 
     private static string Nombre(string? nombre) => string.IsNullOrWhiteSpace(nombre) ? "No informado" : nombre;
+
+    private static string EstadoFirmante(FirmanteDocumento firmante)
+    {
+        if (firmante.Tipo != "group" || firmante.Estado != "signed")
+            return Estado(firmante.Estado, "signed", "firmado", firmante.FirmadoAt);
+
+        // El grupo puede completarse con la firma de solo algunos miembros.
+        var nombres = firmante.Miembros.Where(miembro => miembro.Estado == "signed")
+            .Select(miembro => Nombre(miembro.Nombre)).ToArray();
+        return nombres.Length == 0
+            ? "firmado — firmantes no informados"
+            : $"firmado por: {string.Join(", ", nombres)}";
+    }
 
     private static string Estado(string? estado, string completado, string accion, DateTimeOffset? fecha)
     {

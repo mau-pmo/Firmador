@@ -130,18 +130,18 @@
             // 
             // colVerPdf
             // 
-            colVerPdf.HeaderText = "";
+            colVerPdf.HeaderText = "Documento";
             colVerPdf.MinimumWidth = 8;
             colVerPdf.Name = "colVerPdf";
-            colVerPdf.Text = "Ver PDF";
+            colVerPdf.Text = "ver";
             colVerPdf.UseColumnTextForButtonValue = true;
             colVerPdf.Width = 100;
             //
             // colVerParticipantes
             //
-            colVerParticipantes.HeaderText = "Ver participantes";
+            colVerParticipantes.HeaderText = "Intervinientes";
             colVerParticipantes.Name = "colVerParticipantes";
-            colVerParticipantes.Text = "Ver participantes";
+            colVerParticipantes.Text = "ver";
             colVerParticipantes.ReadOnly = true;
             colVerParticipantes.UseColumnTextForButtonValue = true;
             colVerParticipantes.Width = 180;
