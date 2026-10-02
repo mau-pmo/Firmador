@@ -135,7 +135,7 @@
             colVerPdf.Name = "colVerPdf";
             colVerPdf.Text = "ver";
             colVerPdf.UseColumnTextForButtonValue = true;
-            colVerPdf.Width = 100;
+            colVerPdf.Width = 140;
             //
             // colVerParticipantes
             //
@@ -144,7 +144,7 @@
             colVerParticipantes.Text = "ver";
             colVerParticipantes.ReadOnly = true;
             colVerParticipantes.UseColumnTextForButtonValue = true;
-            colVerParticipantes.Width = 180;
+            colVerParticipantes.Width = 140;
             // 
             // btnPaginaAnterior
             // 
