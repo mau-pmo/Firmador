@@ -42,9 +42,18 @@ public partial class MainForm : Form
         _certificadoSeleccionado = certificadoSeleccionado;
 
         InitializeComponent();
+        ConfigurarEnlaceColumnas();
         ConfigurarBotonBuscar();
         ConfigurarBotonFirmar();
         InicializarPantalla();
+    }
+
+    private void ConfigurarEnlaceColumnas()
+    {
+        // Enlazar en ejecución permite mostrar todas las columnas en el diseñador sin un origen de datos.
+        colSeleccionar.DataPropertyName = nameof(DocumentoGridItem.Seleccionado);
+        colTipoDocumento.DataPropertyName = nameof(DocumentoGridItem.TipoDocumento);
+        colTitulo.DataPropertyName = nameof(DocumentoGridItem.Titulo);
     }
 
     private void ConfigurarBotonBuscar()

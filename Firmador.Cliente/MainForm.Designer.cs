@@ -104,7 +104,6 @@
             // 
             // colSeleccionar
             // 
-            colSeleccionar.DataPropertyName = "Seleccionado";
             colSeleccionar.HeaderText = "";
             colSeleccionar.MinimumWidth = 8;
             colSeleccionar.Name = "colSeleccionar";
@@ -112,7 +111,6 @@
             // 
             // colTipoDocumento
             // 
-            colTipoDocumento.DataPropertyName = "TipoDocumento";
             colTipoDocumento.HeaderText = "Tipo de Documento";
             colTipoDocumento.MinimumWidth = 8;
             colTipoDocumento.Name = "colTipoDocumento";
@@ -122,7 +120,6 @@
             // colTitulo
             // 
             colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTitulo.DataPropertyName = "Titulo";
             colTitulo.HeaderText = "Título";
             colTitulo.MinimumWidth = 8;
             colTitulo.Name = "colTitulo";
