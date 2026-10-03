@@ -32,7 +32,6 @@ namespace Firmador.Cliente
             picAplicacion = new PictureBox();
             picCertificado = new PictureBox();
             lblAplicacion = new Label();
-            lblSubtitulo = new Label();
             lblDocumentosTitulo = new Label();
             lblCertificadoTitulo = new Label();
             lblCertificadoSeleccionado = new Label();
@@ -73,7 +72,6 @@ namespace Firmador.Cliente
             picAplicacion.Name = "picAplicacion";
             picCertificado.Name = "picCertificado";
             lblAplicacion.Name = "lblAplicacion";
-            lblSubtitulo.Name = "lblSubtitulo";
             lblDocumentosTitulo.Name = "lblDocumentosTitulo";
             lblCertificadoTitulo.Name = "lblCertificadoTitulo";
             lblCertificadoSeleccionado.Name = "lblCertificadoSeleccionado";
@@ -103,10 +101,10 @@ namespace Firmador.Cliente
             layoutPrincipal.ColumnCount = 1;
             layoutPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             layoutPrincipal.RowCount = 7;
-            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 76F));
-            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 88F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 56F));
             layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
-            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
             layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
             layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 76F));
@@ -120,7 +118,7 @@ namespace Firmador.Cliente
 
             layoutCabecera.Dock = DockStyle.Fill;
             layoutCabecera.Margin = new Padding(0);
-            layoutCabecera.Padding = new Padding(24, 14, 24, 10);
+            layoutCabecera.Padding = new Padding(24, 8, 24, 8);
             layoutCabecera.ColumnCount = 3;
             layoutCabecera.RowCount = 1;
             layoutCabecera.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 54F));
@@ -137,25 +135,20 @@ namespace Firmador.Cliente
             layoutTitulos.Margin = new Padding(8, 0, 0, 0);
             layoutTitulos.ColumnCount = 1;
             layoutTitulos.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            layoutTitulos.RowCount = 2;
-            layoutTitulos.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
-            layoutTitulos.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
+            layoutTitulos.RowCount = 1;
+            layoutTitulos.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             layoutTitulos.Controls.Add(lblAplicacion, 0, 0);
-            layoutTitulos.Controls.Add(lblSubtitulo, 0, 1);
             lblAplicacion.Dock = DockStyle.Fill;
             lblAplicacion.Text = "Firmador EDA";
             lblAplicacion.TextAlign = ContentAlignment.MiddleLeft;
-            lblSubtitulo.Dock = DockStyle.Fill;
-            lblSubtitulo.Text = "Documentos pendientes de firma";
-            lblSubtitulo.TextAlign = ContentAlignment.MiddleLeft;
             btnSalir.Anchor = AnchorStyles.Right;
-            btnSalir.Size = new Size(88, 38);
+            btnSalir.Size = new Size(88, 32);
             btnSalir.Text = "Salir";
             btnSalir.Click += btnSalir_Click;
 
             layoutCertificado.Dock = DockStyle.Fill;
             layoutCertificado.Margin = new Padding(0);
-            layoutCertificado.Padding = new Padding(24, 12, 24, 12);
+            layoutCertificado.Padding = new Padding(24, 6, 24, 6);
             layoutCertificado.ColumnCount = 4;
             layoutCertificado.RowCount = 1;
             layoutCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 54F));
@@ -172,32 +165,39 @@ namespace Firmador.Cliente
             picCertificado.TabStop = false;
             layoutDatosCertificado.Dock = DockStyle.Fill;
             layoutDatosCertificado.Margin = new Padding(8, 0, 12, 0);
-            layoutDatosCertificado.ColumnCount = 1;
+            layoutDatosCertificado.ColumnCount = 2;
+            layoutDatosCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 140F));
             layoutDatosCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            layoutDatosCertificado.RowCount = 3;
-            layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+            layoutDatosCertificado.RowCount = 2;
+            layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
             layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
-            layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             layoutDatosCertificado.Controls.Add(lblCertificadoTitulo, 0, 0);
-            layoutDatosCertificado.Controls.Add(lblCertificadoSeleccionado, 0, 1);
-            layoutDatosCertificado.Controls.Add(lblCertificadoDetalle, 0, 2);
+            layoutDatosCertificado.Controls.Add(lblCertificadoSeleccionado, 1, 0);
+            layoutDatosCertificado.Controls.Add(lblCertificadoDetalle, 0, 1);
+            layoutDatosCertificado.SetColumnSpan(lblCertificadoDetalle, 2);
             lblCertificadoTitulo.Dock = DockStyle.Fill;
+            lblCertificadoTitulo.Margin = new Padding(0);
+            lblCertificadoTitulo.TextAlign = ContentAlignment.MiddleLeft;
             lblCertificadoTitulo.Text = "Certificado de firma";
             lblCertificadoSeleccionado.Dock = DockStyle.Fill;
+            lblCertificadoSeleccionado.Margin = new Padding(0);
+            lblCertificadoSeleccionado.TextAlign = ContentAlignment.MiddleLeft;
             lblCertificadoSeleccionado.Text = "Sin certificado seleccionado";
             lblCertificadoSeleccionado.AutoEllipsis = true;
             lblCertificadoDetalle.Dock = DockStyle.Fill;
+            lblCertificadoDetalle.Margin = new Padding(0);
+            lblCertificadoDetalle.TextAlign = ContentAlignment.MiddleLeft;
             lblCertificadoDetalle.AutoEllipsis = true;
             lblCertificadoEstado.Dock = DockStyle.Fill;
             lblCertificadoEstado.TextAlign = ContentAlignment.MiddleLeft;
             btnSeleccionarCertificado.Anchor = AnchorStyles.Right;
-            btnSeleccionarCertificado.Size = new Size(200, 40);
+            btnSeleccionarCertificado.Size = new Size(200, 36);
             btnSeleccionarCertificado.Text = "Seleccionar certificado";
             btnSeleccionarCertificado.Click += btnSeleccionarCertificado_Click;
 
             layoutDocumentos.Dock = DockStyle.Fill;
             layoutDocumentos.Margin = new Padding(0);
-            layoutDocumentos.Padding = new Padding(24, 8, 24, 8);
+            layoutDocumentos.Padding = new Padding(24, 3, 24, 3);
             layoutDocumentos.ColumnCount = 2;
             layoutDocumentos.RowCount = 1;
             layoutDocumentos.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
@@ -209,7 +209,7 @@ namespace Firmador.Cliente
             lblDocumentosTitulo.Text = "Documentos pendientes";
             lblDocumentosTitulo.TextAlign = ContentAlignment.MiddleLeft;
             btnBuscar.Anchor = AnchorStyles.Right;
-            btnBuscar.Size = new Size(120, 40);
+            btnBuscar.Size = new Size(120, 36);
             btnBuscar.Text = "Buscar";
             btnBuscar.Click += btnBuscar_Click;
 
@@ -218,8 +218,8 @@ namespace Firmador.Cliente
             layoutSeleccion.Padding = new Padding(24, 0, 24, 0);
             layoutSeleccion.ColumnCount = 3;
             layoutSeleccion.RowCount = 1;
-            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 128F));
-            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 160F));
+            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 112F));
+            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 136F));
             layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             layoutSeleccion.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             layoutSeleccion.Controls.Add(btnMarcarTodos, 0, 0);
@@ -238,6 +238,7 @@ namespace Firmador.Cliente
 
             panelGrilla.Dock = DockStyle.Fill;
             panelGrilla.Margin = new Padding(24, 0, 24, 0);
+            panelGrilla.Padding = new Padding(1);
             panelGrilla.Controls.Add(lblEstadoGrilla);
             panelGrilla.Controls.Add(dgvDocumentos);
             lblEstadoGrilla.Dock = DockStyle.Fill;
@@ -384,7 +385,6 @@ namespace Firmador.Cliente
         private PictureBox picAplicacion;
         private PictureBox picCertificado;
         private Label lblAplicacion;
-        private Label lblSubtitulo;
         private Label lblDocumentosTitulo;
         private Label lblCertificadoDetalle;
         private Label lblCertificadoEstado;

@@ -38,6 +38,8 @@ Los datos se muestran en una tabla, ocultando el id y el hash. La tabla queda co
 #### Presentación de la pantalla principal
 
 - La cabecera identifica la aplicación y mantiene la acción `Salir`.
+- La cabecera muestra únicamente `Firmador EDA`. La franja compacta del certificado muestra su etiqueta y el titular en la primera línea, con el vencimiento debajo, y separadores horizontales arriba y abajo.
+- El título de documentos y las acciones de selección tienen alturas compactas para priorizar la tabla, que se delimita con un borde gris fino tanto con documentos como en los estados vacíos.
 - La franja de certificado muestra el titular, el vencimiento y el estado de selección. Permite seleccionar o cambiar el certificado; no indica que el token esté conectado.
 - La tabla usa filas celestes únicamente para documentos marcados con el checkbox. El foco de teclado no equivale a seleccionar un documento para firmar.
 - Las acciones `Marcar todos` y `Limpiar selección` afectan la página actual. El contador y el botón de firma se actualizan con la selección.

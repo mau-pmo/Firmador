@@ -20,7 +20,7 @@ public partial class MainForm
         lblCertificadoSeleccionado.Font = destacada;
         lblResumenSeleccion.Font = destacada;
         var secundaria = CrearFuente(9, FontStyle.Regular);
-        foreach (var label in new[] { lblSubtitulo, lblCertificadoTitulo, lblCertificadoDetalle,
+        foreach (var label in new[] { lblCertificadoTitulo, lblCertificadoDetalle,
                      lblCertificadoEstado, lblSeleccion, lblTotalDocumentos, lblPagina, lblResumenCertificado })
         {
             label.Font = secundaria;
@@ -29,12 +29,17 @@ public partial class MainForm
         lblEstadoGrilla.ForeColor = TemaVisual.TextoSecundario;
         lblEstadoGrilla.BackColor = TemaVisual.Superficie;
         layoutCertificado.Paint += PintarSeparador;
+        layoutDocumentos.Paint += PintarSeparador;
         layoutFirma.Paint += PintarSeparador;
+        panelGrilla.Paint += PintarBordeGrilla;
+        panelGrilla.Resize += (_, _) => panelGrilla.Invalidate();
 
         foreach (var button in new[] { btnBuscar, btnSeleccionarCertificado, btnPaginaAnterior, btnPaginaSiguiente })
             TemaVisual.EstilarBoton(button);
         foreach (var button in new[] { btnSalir, btnMarcarTodos, btnLimpiarSeleccion })
             TemaVisual.EstilarBoton(button, discreto: true);
+        btnMarcarTodos.Font = secundaria;
+        btnLimpiarSeleccion.Font = secundaria;
         TemaVisual.EstilarBoton(btnFirmarDocumentos, principal: true);
         btnFirmarDocumentos.Font = CrearFuente(10, FontStyle.Bold);
         btnFirmarDocumentos.EnabledChanged += (_, _) =>
@@ -43,7 +48,7 @@ public partial class MainForm
         };
 
         // Glifos de la biblioteca de iconos de Windows, sin una dependencia adicional.
-        picAplicacion.Image = CrearIconoWindows("\uE70F", 38, TemaVisual.Azul);
+        picAplicacion.Image = CrearIconoWindows("\uE70F", 30, TemaVisual.Azul);
         picCertificado.Image = CrearIconoWindows("\uEB95", 30, TemaVisual.Azul);
         _iconoPdf = CrearIconoWindows("\uE8A5", 18, TemaVisual.Azul);
         _iconoIntervinientes = CrearIconoWindows("\uE716", 18, TemaVisual.Azul);
@@ -179,6 +184,13 @@ public partial class MainForm
         if (sender is not Control control) return;
         using var lapiz = new Pen(TemaVisual.Borde);
         e.Graphics.DrawLine(lapiz, 0, 0, control.Width, 0);
+    }
+
+    private void PintarBordeGrilla(object? sender, PaintEventArgs e)
+    {
+        if (panelGrilla.ClientSize.Width < 2 || panelGrilla.ClientSize.Height < 2) return;
+        using var lapiz = new Pen(TemaVisual.Borde);
+        e.Graphics.DrawRectangle(lapiz, 0, 0, panelGrilla.ClientSize.Width - 1, panelGrilla.ClientSize.Height - 1);
     }
 
     private void ActualizarSeleccionVisual()
