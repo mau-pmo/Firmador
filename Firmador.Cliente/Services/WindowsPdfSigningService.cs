@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Firmador.Core.Firma;
 using iText.Forms;
@@ -65,16 +66,24 @@ public sealed class WindowsPdfSigningService : IFirmaPdfService
 
         var firma = new WindowsCertificateSignature(certificado);
         var cadena = CrearCadenaCertificados(certificado);
-        var tsaClient = new TSAClientBouncyCastle(_tsaUrl);
+        var tsaClient = new ClienteTsa(_tsaUrl);
 
-        signer.SignDetached(
-            firma,
-            cadena,
-            crlList: null,
-            ocspClient: null,
-            tsaClient,
-            estimatedSize: 0,
-            sigtype: PdfSigner.CryptoStandard.CADES);
+        try
+        {
+            signer.SignDetached(
+                firma,
+                cadena,
+                crlList: null,
+                ocspClient: null,
+                tsaClient,
+                estimatedSize: 0,
+                sigtype: PdfSigner.CryptoStandard.CADES);
+        }
+        catch (iText.Kernel.Exceptions.PdfException ex) when (ex.InnerException is ServidorTsaNoDisponibleException)
+        {
+            // iText envuelve la falla de la TSA; conservar su origen al salir del servicio.
+            throw new ServidorTsaNoDisponibleException(ex);
+        }
 
         return new FirmaDocumentoResultado
         {
@@ -194,6 +203,21 @@ public sealed class WindowsPdfSigningService : IFirmaPdfService
         return elementos.Length > 0
             ? elementos
             : [parser.ReadCertificate(certificado.RawData)];
+    }
+
+    private sealed class ClienteTsa(string url) : TSAClientBouncyCastle(url)
+    {
+        public override byte[] GetTimeStampToken(byte[] imprint)
+        {
+            try
+            {
+                return base.GetTimeStampToken(imprint);
+            }
+            catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex) || ex is WebException)
+            {
+                throw new ServidorTsaNoDisponibleException(ex);
+            }
+        }
     }
 
     private sealed class WindowsCertificateSignature : IExternalSignature

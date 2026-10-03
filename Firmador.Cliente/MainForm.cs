@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Firmador.ApiClient.Abstractions;
@@ -42,6 +41,7 @@ public partial class MainForm : Form
         _certificadoSeleccionado = certificadoSeleccionado;
 
         InitializeComponent();
+        AplicarEstilos();
         ConfigurarEnlaceColumnas();
         ConfigurarBotonBuscar();
         ConfigurarBotonFirmar();
@@ -58,82 +58,18 @@ public partial class MainForm : Form
 
     private void ConfigurarBotonBuscar()
     {
-        btnBuscar.Image = CrearIconoBusqueda();
-        btnBuscar.ImageAlign = ContentAlignment.MiddleLeft;
-        btnBuscar.TextImageRelation = TextImageRelation.ImageBeforeText;
-        btnBuscar.Padding = new Padding(8, 0, 8, 0);
+        ConfigurarIcono(btnBuscar, "\uE721", TemaVisual.Azul);
     }
 
     private void ConfigurarBotonFirmar()
     {
-        btnFirmarDocumentos.Image = CrearIconoLapicera();
-        btnFirmarDocumentos.ImageAlign = ContentAlignment.MiddleLeft;
-        btnFirmarDocumentos.TextImageRelation = TextImageRelation.ImageBeforeText;
-        btnFirmarDocumentos.Padding = new Padding(8, 0, 8, 0);
-    }
-
-    private static Bitmap CrearIconoBusqueda()
-    {
-        var bitmap = new Bitmap(18, 18);
-
-        using var graphics = Graphics.FromImage(bitmap);
-        graphics.SmoothingMode = SmoothingMode.AntiAlias;
-        graphics.Clear(Color.Transparent);
-
-        using var lente = new Pen(Color.FromArgb(30, 41, 59), 2)
-        {
-            StartCap = LineCap.Round,
-            EndCap = LineCap.Round
-        };
-        using var brillo = new Pen(Color.FromArgb(59, 130, 246), 1)
-        {
-            StartCap = LineCap.Round,
-            EndCap = LineCap.Round
-        };
-
-        graphics.DrawEllipse(lente, 3, 3, 8, 8);
-        graphics.DrawLine(lente, 10, 10, 14, 14);
-        graphics.DrawArc(brillo, 4, 4, 6, 6, 215, 90);
-
-        return bitmap;
-    }
-
-    private static Bitmap CrearIconoLapicera()
-    {
-        var bitmap = new Bitmap(18, 18);
-
-        using var graphics = Graphics.FromImage(bitmap);
-        graphics.SmoothingMode = SmoothingMode.AntiAlias;
-        graphics.Clear(Color.Transparent);
-
-        using var cuerpoLapicera = new Pen(Color.FromArgb(36, 99, 235), 3)
-        {
-            StartCap = LineCap.Round,
-            EndCap = LineCap.Round
-        };
-        using var detalleLapicera = new Pen(Color.FromArgb(30, 41, 59), 2)
-        {
-            StartCap = LineCap.Round,
-            EndCap = LineCap.Round
-        };
-        using var punta = new SolidBrush(Color.FromArgb(217, 119, 6));
-
-        graphics.DrawLine(cuerpoLapicera, 4, 13, 11, 6);
-        graphics.DrawLine(detalleLapicera, 11, 6, 14, 3);
-        graphics.FillPolygon(punta, new[]
-        {
-            new Point(14, 3),
-            new Point(15, 5),
-            new Point(12, 6)
-        });
-        graphics.DrawLine(detalleLapicera, 3, 14, 5, 12);
-
-        return bitmap;
+        ConfigurarIcono(btnFirmarDocumentos, "\uE70F", Color.White);
     }
 
     private async Task CargarPaginaAsync(int numeroPagina)
     {
         ToggleControles(false);
+        ActualizarEstadoGrilla("Buscando documentos…");
 
         try
         {
@@ -157,6 +93,7 @@ public partial class MainForm : Form
         finally
         {
             ToggleControles(true);
+            ActualizarEstadoGrilla();
         }
     }
 
@@ -177,21 +114,25 @@ public partial class MainForm : Form
         dgvDocumentos.DataSource = items;
         foreach (var nombre in new[] { nameof(DocumentoGridItem.Id), nameof(DocumentoGridItem.Hash), nameof(DocumentoGridItem.Version) })
             if (dgvDocumentos.Columns[nombre] is { } columna) columna.Visible = false;
+        ActualizarSeleccionVisual();
+        ActualizarEstadoGrilla();
     }
 
     private void ActualizarPaginacion()
     {
         if (!_busquedaRealizada || _paginaActual is null)
         {
-            lblPagina.Text = "Sin busqueda";
-            lblTotalDocumentos.Text = "Total de documentos: 0";
+            lblPagina.Text = "Sin búsqueda";
+            lblTotalDocumentos.Text = "0 documentos";
             btnPaginaAnterior.Enabled = false;
             btnPaginaSiguiente.Enabled = false;
             return;
         }
 
-        lblPagina.Text = $"Pagina {_paginaActual.PageNumber} de {_paginaActual.TotalPages}";
-        lblTotalDocumentos.Text = $"Total de documentos: {_paginaActual.TotalCount}";
+        lblPagina.Text = $"Página {_paginaActual.PageNumber} de {Math.Max(1, _paginaActual.TotalPages)}";
+        var desde = _paginaActual.Items.Count == 0 ? 0 : (_paginaActual.PageNumber - 1) * PageSize + 1;
+        var hasta = desde == 0 ? 0 : desde + _paginaActual.Items.Count - 1;
+        lblTotalDocumentos.Text = $"Mostrando {desde}–{hasta} de {_paginaActual.TotalCount} documentos";
         btnPaginaAnterior.Enabled = _paginaActual.PageNumber > 1;
         btnPaginaSiguiente.Enabled = _paginaActual.PageNumber < _paginaActual.TotalPages;
     }
@@ -201,29 +142,39 @@ public partial class MainForm : Form
         dgvDocumentos.DataSource = new List<DocumentoGridItem>();
         ActualizarPaginacion();
         ActualizarCertificadoSeleccionado();
+        ActualizarSeleccionVisual();
+        ActualizarEstadoGrilla();
     }
 
     private void ActualizarCertificadoSeleccionado()
     {
-        lblCertificadoSeleccionado.Text = _certificadoSeleccionado is null
-            ? "No hay certificado seleccionado"
-            : _certificadoSeleccionado.Subject;
-        lblCertificadoSeleccionado.BackColor = _certificadoSeleccionado is null
-            ? Color.LightYellow
-            : Color.LightGreen;
+        var nombre = _certificadoSeleccionado?.GetNameInfo(X509NameType.SimpleName, false);
+        if (string.IsNullOrWhiteSpace(nombre)) nombre = _certificadoSeleccionado?.Subject;
+        lblCertificadoSeleccionado.Text = nombre ?? "Sin certificado seleccionado";
+        var vigente = _certificadoSeleccionado is not null && DateTime.Now >= _certificadoSeleccionado.NotBefore
+            && DateTime.Now <= _certificadoSeleccionado.NotAfter;
+        lblCertificadoDetalle.Text = _certificadoSeleccionado is null ? ""
+            : $"{(vigente ? "Vigente hasta" : "Vencimiento:")} {_certificadoSeleccionado.NotAfter:dd/MM/yyyy}";
+        lblCertificadoEstado.Text = _certificadoSeleccionado is null ? "Sin seleccionar"
+            : vigente ? "✓ Certificado seleccionado" : "⚠ Fuera de vigencia";
+        lblCertificadoEstado.ForeColor = vigente ? TemaVisual.Correcto : TemaVisual.Advertencia;
+        btnSeleccionarCertificado.Text = _certificadoSeleccionado is null ? "Seleccionar certificado" : "Cambiar certificado";
+        lblResumenCertificado.Text = _certificadoSeleccionado is null ? "Sin certificado seleccionado" : $"Certificado: {nombre}";
+        toolTip.SetToolTip(lblCertificadoSeleccionado, _certificadoSeleccionado?.Subject ?? lblCertificadoSeleccionado.Text);
+        toolTip.SetToolTip(lblResumenCertificado, lblResumenCertificado.Text);
     }
 
     private void ToggleControles(bool habilitado)
     {
+        _operacionEnCurso = !habilitado;
         btnBuscar.Enabled = habilitado;
-        btnFirmarDocumentos.Enabled = habilitado;
-        btnMarcarTodos.Enabled = habilitado;
-        btnLimpiarSeleccion.Enabled = habilitado;
         btnSeleccionarCertificado.Enabled = habilitado;
         btnSalir.Enabled = habilitado;
         btnPaginaAnterior.Enabled = habilitado && _paginaActual is not null && _paginaActual.PageNumber > 1;
         btnPaginaSiguiente.Enabled = habilitado && _paginaActual is not null && _paginaActual.PageNumber < _paginaActual.TotalPages;
         dgvDocumentos.Enabled = habilitado;
+        UseWaitCursor = !habilitado;
+        ActualizarSeleccionVisual();
     }
 
     private List<DocumentoGridItem> ObtenerDocumentosSeleccionados()
@@ -251,6 +202,7 @@ public partial class MainForm : Form
         }
 
         dgvDocumentos.Refresh();
+        ActualizarSeleccionVisual();
     }
 
     private X509Certificate2? ObtenerOCapturarCertificado()
@@ -319,6 +271,7 @@ public partial class MainForm : Form
 
         foreach (var documento in documentosSeleccionados)
         {
+            lblResumenSeleccion.Text = $"Firmando documento {resultados.Count + 1} de {documentosSeleccionados.Count}…";
             try
             {
                 var resumen = ObtenerResumen(documento.Id);
@@ -349,6 +302,7 @@ public partial class MainForm : Form
                 resultados.Add($"Documento {documento.Id}: recibido por el sistema web.");
             }
             catch (SesionExpiradaException) { throw; }
+            catch (ServidorTsaNoDisponibleException) { throw; }
             catch (Exception ex) when (ErroresConexion.EsFallaDeConexion(ex)) { throw; }
             catch (HashDocumentoNoCoincideException)
             {
@@ -447,6 +401,10 @@ public partial class MainForm : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             await CargarPaginaAsync(_paginaActual?.PageNumber ?? 1);
+        }
+        catch (ServidorTsaNoDisponibleException ex)
+        {
+            MessageBox.Show(ex.Message, "Firmar", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         catch (SesionExpiradaException)
         {
@@ -572,8 +530,4 @@ public partial class MainForm : Form
         Close();
     }
 
-    private void lblTotalDocumentos_Click(object sender, EventArgs e)
-    {
-
-    }
 }

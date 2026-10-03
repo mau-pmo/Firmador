@@ -32,8 +32,19 @@ Los datos se muestran en una tabla, ocultando el id y el hash. La tabla queda co
 - Id, oculto
 - Tipo de documento, visible
 - Título, visible
-- Columna `Documento` con botón `ver` en cada fila, visible
-- Columna `Intervinientes` con botón `ver` en cada fila, visible
+- Columna `Documento` con acción `Ver PDF` en cada fila, visible
+- Columna `Intervinientes` con acción `Ver` en cada fila, visible
+
+#### Presentación de la pantalla principal
+
+- La cabecera identifica la aplicación y mantiene la acción `Salir`.
+- La franja de certificado muestra el titular, el vencimiento y el estado de selección. Permite seleccionar o cambiar el certificado; no indica que el token esté conectado.
+- La tabla usa filas celestes únicamente para documentos marcados con el checkbox. El foco de teclado no equivale a seleccionar un documento para firmar.
+- Las acciones `Marcar todos` y `Limpiar selección` afectan la página actual. El contador y el botón de firma se actualizan con la selección.
+- La barra inferior muestra el resumen de selección y el certificado. El botón indica la cantidad de documentos a firmar y permanece deshabilitado cuando no hay documentos seleccionados.
+- La pantalla distingue la búsqueda inicial, la carga y una búsqueda sin resultados. La paginación muestra el rango de documentos y la página actual.
+- Durante la búsqueda o firma se bloquean las acciones incompatibles. Durante la firma se muestra el número de documento en proceso.
+- La ventana inicial se ajusta al área útil del monitor para mantener visible la barra de firma. Los anchos de las columnas y el área del checkbox se adaptan al escalado de Windows.
 
 #### Ver participantes
 
@@ -57,5 +68,6 @@ La aplicación valida que haya al menos un documento seleccionado en la tabla. L
 - El certificado debe provenir de un token USB conectado.
 - Una vez seleccionado, se aplica la firma.
 - La firma incorpora un sello de tiempo emitido por la TSA configurada.
+- Si no hay acceso a la TSA, la firma se detiene e informa `No hay acceso al servidor de sello de tiempo (TSA)`. Si falla la conexión con la API, informa `No hay acceso al servidor EDA`.
 - En `MainForm` se debe mostrar el certificado seleccionado.
 - No se debe volver a pedir el certificado hasta que se cierre el programa.

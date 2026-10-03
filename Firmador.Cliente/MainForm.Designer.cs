@@ -1,271 +1,398 @@
-﻿namespace Firmador.Cliente
+namespace Firmador.Cliente
 {
     partial class MainForm
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing)
             {
-                components.Dispose();
+                components?.Dispose();
+                foreach (var recurso in _recursosVisuales) recurso.Dispose();
             }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            layoutPrincipal = new TableLayoutPanel();
+            layoutCabecera = new TableLayoutPanel();
+            layoutTitulos = new TableLayoutPanel();
+            layoutCertificado = new TableLayoutPanel();
+            layoutDatosCertificado = new TableLayoutPanel();
+            layoutDocumentos = new TableLayoutPanel();
+            layoutSeleccion = new TableLayoutPanel();
+            layoutPaginacion = new TableLayoutPanel();
+            layoutFirma = new TableLayoutPanel();
+            layoutResumenFirma = new TableLayoutPanel();
+            panelGrilla = new Panel();
+            picAplicacion = new PictureBox();
+            picCertificado = new PictureBox();
+            lblAplicacion = new Label();
+            lblSubtitulo = new Label();
+            lblDocumentosTitulo = new Label();
+            lblCertificadoTitulo = new Label();
+            lblCertificadoSeleccionado = new Label();
+            lblCertificadoDetalle = new Label();
+            lblCertificadoEstado = new Label();
+            lblSeleccion = new Label();
+            lblResumenSeleccion = new Label();
+            lblResumenCertificado = new Label();
+            lblEstadoGrilla = new Label();
+            lblPagina = new Label();
+            lblTotalDocumentos = new Label();
             btnBuscar = new Button();
             btnFirmarDocumentos = new Button();
             btnSalir = new Button();
+            btnSeleccionarCertificado = new Button();
+            btnMarcarTodos = new Button();
+            btnLimpiarSeleccion = new Button();
+            btnPaginaAnterior = new Button();
+            btnPaginaSiguiente = new Button();
             dgvDocumentos = new DataGridView();
             colSeleccionar = new DataGridViewCheckBoxColumn();
             colTipoDocumento = new DataGridViewTextBoxColumn();
             colTitulo = new DataGridViewTextBoxColumn();
-            colVerPdf = new DataGridViewButtonColumn();
-            colVerParticipantes = new DataGridViewButtonColumn();
-            btnPaginaAnterior = new Button();
-            btnPaginaSiguiente = new Button();
-            lblPagina = new Label();
-            lblTotalDocumentos = new Label();
-            lblCertificadoTitulo = new Label();
-            lblCertificadoSeleccionado = new Label();
-            btnSeleccionarCertificado = new Button();
-            btnMarcarTodos = new Button();
-            btnLimpiarSeleccion = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
-            SuspendLayout();
-            // 
-            // btnBuscar
-            // 
-            btnBuscar.Location = new Point(1099, 109);
+            colVerPdf = new DataGridViewLinkColumn();
+            colVerParticipantes = new DataGridViewLinkColumn();
+            toolTip = new ToolTip(components);
+            layoutPrincipal.Name = "layoutPrincipal";
+            layoutCabecera.Name = "layoutCabecera";
+            layoutTitulos.Name = "layoutTitulos";
+            layoutCertificado.Name = "layoutCertificado";
+            layoutDatosCertificado.Name = "layoutDatosCertificado";
+            layoutDocumentos.Name = "layoutDocumentos";
+            layoutSeleccion.Name = "layoutSeleccion";
+            layoutPaginacion.Name = "layoutPaginacion";
+            layoutFirma.Name = "layoutFirma";
+            layoutResumenFirma.Name = "layoutResumenFirma";
+            panelGrilla.Name = "panelGrilla";
+            picAplicacion.Name = "picAplicacion";
+            picCertificado.Name = "picCertificado";
+            lblAplicacion.Name = "lblAplicacion";
+            lblSubtitulo.Name = "lblSubtitulo";
+            lblDocumentosTitulo.Name = "lblDocumentosTitulo";
+            lblCertificadoTitulo.Name = "lblCertificadoTitulo";
+            lblCertificadoSeleccionado.Name = "lblCertificadoSeleccionado";
+            lblCertificadoDetalle.Name = "lblCertificadoDetalle";
+            lblCertificadoEstado.Name = "lblCertificadoEstado";
+            lblSeleccion.Name = "lblSeleccion";
+            lblResumenSeleccion.Name = "lblResumenSeleccion";
+            lblResumenCertificado.Name = "lblResumenCertificado";
+            lblEstadoGrilla.Name = "lblEstadoGrilla";
+            lblPagina.Name = "lblPagina";
+            lblTotalDocumentos.Name = "lblTotalDocumentos";
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(140, 44);
-            btnBuscar.TabIndex = 2;
-            btnBuscar.Text = "Buscar";
-            btnBuscar.UseVisualStyleBackColor = true;
-            btnBuscar.Click += btnBuscar_Click;
-            // 
-            // btnFirmarDocumentos
-            // 
-            btnFirmarDocumentos.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnFirmarDocumentos.Location = new Point(1255, 109);
             btnFirmarDocumentos.Name = "btnFirmarDocumentos";
-            btnFirmarDocumentos.Size = new Size(140, 44);
-            btnFirmarDocumentos.TabIndex = 3;
-            btnFirmarDocumentos.Text = "Firmar";
-            btnFirmarDocumentos.UseVisualStyleBackColor = true;
-            btnFirmarDocumentos.Click += btnFirmarDocumentos_Click;
-            // 
-            // btnSalir
-            // 
-            btnSalir.Location = new Point(1275, 12);
             btnSalir.Name = "btnSalir";
-            btnSalir.Size = new Size(132, 44);
-            btnSalir.TabIndex = 2;
+            btnSeleccionarCertificado.Name = "btnSeleccionarCertificado";
+            btnMarcarTodos.Name = "btnMarcarTodos";
+            btnLimpiarSeleccion.Name = "btnLimpiarSeleccion";
+            btnPaginaAnterior.Name = "btnPaginaAnterior";
+            btnPaginaSiguiente.Name = "btnPaginaSiguiente";
+            ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picAplicacion).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picCertificado).BeginInit();
+            SuspendLayout();
+
+            layoutPrincipal.Dock = DockStyle.Fill;
+            layoutPrincipal.Margin = new Padding(0);
+            layoutPrincipal.ColumnCount = 1;
+            layoutPrincipal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutPrincipal.RowCount = 7;
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 76F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 88F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 44F));
+            layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Absolute, 76F));
+            layoutPrincipal.Controls.Add(layoutCabecera, 0, 0);
+            layoutPrincipal.Controls.Add(layoutCertificado, 0, 1);
+            layoutPrincipal.Controls.Add(layoutDocumentos, 0, 2);
+            layoutPrincipal.Controls.Add(layoutSeleccion, 0, 3);
+            layoutPrincipal.Controls.Add(panelGrilla, 0, 4);
+            layoutPrincipal.Controls.Add(layoutPaginacion, 0, 5);
+            layoutPrincipal.Controls.Add(layoutFirma, 0, 6);
+
+            layoutCabecera.Dock = DockStyle.Fill;
+            layoutCabecera.Margin = new Padding(0);
+            layoutCabecera.Padding = new Padding(24, 14, 24, 10);
+            layoutCabecera.ColumnCount = 3;
+            layoutCabecera.RowCount = 1;
+            layoutCabecera.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 54F));
+            layoutCabecera.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutCabecera.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 92F));
+            layoutCabecera.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutCabecera.Controls.Add(picAplicacion, 0, 0);
+            layoutCabecera.Controls.Add(layoutTitulos, 1, 0);
+            layoutCabecera.Controls.Add(btnSalir, 2, 0);
+            picAplicacion.Dock = DockStyle.Fill;
+            picAplicacion.SizeMode = PictureBoxSizeMode.CenterImage;
+            picAplicacion.TabStop = false;
+            layoutTitulos.Dock = DockStyle.Fill;
+            layoutTitulos.Margin = new Padding(8, 0, 0, 0);
+            layoutTitulos.ColumnCount = 1;
+            layoutTitulos.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutTitulos.RowCount = 2;
+            layoutTitulos.RowStyles.Add(new RowStyle(SizeType.Percent, 60F));
+            layoutTitulos.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
+            layoutTitulos.Controls.Add(lblAplicacion, 0, 0);
+            layoutTitulos.Controls.Add(lblSubtitulo, 0, 1);
+            lblAplicacion.Dock = DockStyle.Fill;
+            lblAplicacion.Text = "Firmador EDA";
+            lblAplicacion.TextAlign = ContentAlignment.MiddleLeft;
+            lblSubtitulo.Dock = DockStyle.Fill;
+            lblSubtitulo.Text = "Documentos pendientes de firma";
+            lblSubtitulo.TextAlign = ContentAlignment.MiddleLeft;
+            btnSalir.Anchor = AnchorStyles.Right;
+            btnSalir.Size = new Size(88, 38);
             btnSalir.Text = "Salir";
-            btnSalir.UseVisualStyleBackColor = true;
             btnSalir.Click += btnSalir_Click;
-            // 
-            // dgvDocumentos
-            // 
+
+            layoutCertificado.Dock = DockStyle.Fill;
+            layoutCertificado.Margin = new Padding(0);
+            layoutCertificado.Padding = new Padding(24, 12, 24, 12);
+            layoutCertificado.ColumnCount = 4;
+            layoutCertificado.RowCount = 1;
+            layoutCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 54F));
+            layoutCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 194F));
+            layoutCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 206F));
+            layoutCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutCertificado.Controls.Add(picCertificado, 0, 0);
+            layoutCertificado.Controls.Add(layoutDatosCertificado, 1, 0);
+            layoutCertificado.Controls.Add(lblCertificadoEstado, 2, 0);
+            layoutCertificado.Controls.Add(btnSeleccionarCertificado, 3, 0);
+            picCertificado.Dock = DockStyle.Fill;
+            picCertificado.SizeMode = PictureBoxSizeMode.CenterImage;
+            picCertificado.TabStop = false;
+            layoutDatosCertificado.Dock = DockStyle.Fill;
+            layoutDatosCertificado.Margin = new Padding(8, 0, 12, 0);
+            layoutDatosCertificado.ColumnCount = 1;
+            layoutDatosCertificado.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutDatosCertificado.RowCount = 3;
+            layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+            layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
+            layoutDatosCertificado.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+            layoutDatosCertificado.Controls.Add(lblCertificadoTitulo, 0, 0);
+            layoutDatosCertificado.Controls.Add(lblCertificadoSeleccionado, 0, 1);
+            layoutDatosCertificado.Controls.Add(lblCertificadoDetalle, 0, 2);
+            lblCertificadoTitulo.Dock = DockStyle.Fill;
+            lblCertificadoTitulo.Text = "Certificado de firma";
+            lblCertificadoSeleccionado.Dock = DockStyle.Fill;
+            lblCertificadoSeleccionado.Text = "Sin certificado seleccionado";
+            lblCertificadoSeleccionado.AutoEllipsis = true;
+            lblCertificadoDetalle.Dock = DockStyle.Fill;
+            lblCertificadoDetalle.AutoEllipsis = true;
+            lblCertificadoEstado.Dock = DockStyle.Fill;
+            lblCertificadoEstado.TextAlign = ContentAlignment.MiddleLeft;
+            btnSeleccionarCertificado.Anchor = AnchorStyles.Right;
+            btnSeleccionarCertificado.Size = new Size(200, 40);
+            btnSeleccionarCertificado.Text = "Seleccionar certificado";
+            btnSeleccionarCertificado.Click += btnSeleccionarCertificado_Click;
+
+            layoutDocumentos.Dock = DockStyle.Fill;
+            layoutDocumentos.Margin = new Padding(0);
+            layoutDocumentos.Padding = new Padding(24, 8, 24, 8);
+            layoutDocumentos.ColumnCount = 2;
+            layoutDocumentos.RowCount = 1;
+            layoutDocumentos.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutDocumentos.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 126F));
+            layoutDocumentos.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutDocumentos.Controls.Add(lblDocumentosTitulo, 0, 0);
+            layoutDocumentos.Controls.Add(btnBuscar, 1, 0);
+            lblDocumentosTitulo.Dock = DockStyle.Fill;
+            lblDocumentosTitulo.Text = "Documentos pendientes";
+            lblDocumentosTitulo.TextAlign = ContentAlignment.MiddleLeft;
+            btnBuscar.Anchor = AnchorStyles.Right;
+            btnBuscar.Size = new Size(120, 40);
+            btnBuscar.Text = "Buscar";
+            btnBuscar.Click += btnBuscar_Click;
+
+            layoutSeleccion.Dock = DockStyle.Fill;
+            layoutSeleccion.Margin = new Padding(0);
+            layoutSeleccion.Padding = new Padding(24, 0, 24, 0);
+            layoutSeleccion.ColumnCount = 3;
+            layoutSeleccion.RowCount = 1;
+            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 128F));
+            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 160F));
+            layoutSeleccion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutSeleccion.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutSeleccion.Controls.Add(btnMarcarTodos, 0, 0);
+            layoutSeleccion.Controls.Add(btnLimpiarSeleccion, 1, 0);
+            layoutSeleccion.Controls.Add(lblSeleccion, 2, 0);
+            btnMarcarTodos.Dock = DockStyle.Fill;
+            btnMarcarTodos.Text = "Marcar todos";
+            btnMarcarTodos.Click += btnMarcarTodos_Click;
+            btnLimpiarSeleccion.Dock = DockStyle.Fill;
+            btnLimpiarSeleccion.Text = "Limpiar selección";
+            btnLimpiarSeleccion.TabIndex = 1;
+            btnLimpiarSeleccion.Click += btnLimpiarSeleccion_Click;
+            lblSeleccion.Dock = DockStyle.Fill;
+            lblSeleccion.Text = "0 seleccionados";
+            lblSeleccion.TextAlign = ContentAlignment.MiddleRight;
+
+            panelGrilla.Dock = DockStyle.Fill;
+            panelGrilla.Margin = new Padding(24, 0, 24, 0);
+            panelGrilla.Controls.Add(lblEstadoGrilla);
+            panelGrilla.Controls.Add(dgvDocumentos);
+            lblEstadoGrilla.Dock = DockStyle.Fill;
+            lblEstadoGrilla.TextAlign = ContentAlignment.MiddleCenter;
+            lblEstadoGrilla.Text = "Buscá los documentos pendientes de firma";
+            dgvDocumentos.Dock = DockStyle.Fill;
+            dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.AllowUserToAddRows = false;
             dgvDocumentos.AllowUserToDeleteRows = false;
             dgvDocumentos.AllowUserToResizeRows = false;
-            dgvDocumentos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvDocumentos.AutoGenerateColumns = false;
-            dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            dgvDocumentos.BackgroundColor = SystemColors.Window;
-            dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf, colVerParticipantes });
-            dgvDocumentos.Location = new Point(24, 168);
-            dgvDocumentos.MultiSelect = false;
-            dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.RowHeadersVisible = false;
-            dgvDocumentos.RowHeadersWidth = 62;
-            dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDocumentos.Size = new Size(1371, 449);
-            dgvDocumentos.TabIndex = 3;
+            dgvDocumentos.MultiSelect = false;
+            dgvDocumentos.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf, colVerParticipantes });
             dgvDocumentos.CellContentClick += dgvDocumentos_CellContentClick;
             dgvDocumentos.CurrentCellDirtyStateChanged += dgvDocumentos_CurrentCellDirtyStateChanged;
-            // 
-            // colSeleccionar
-            // 
-            colSeleccionar.HeaderText = "";
-            colSeleccionar.MinimumWidth = 8;
+            dgvDocumentos.CellValueChanged += dgvDocumentos_CellValueChanged;
+            dgvDocumentos.CellFormatting += dgvDocumentos_CellFormatting;
+            dgvDocumentos.CellPainting += dgvDocumentos_CellPainting;
             colSeleccionar.Name = "colSeleccionar";
-            colSeleccionar.Width = 50;
-            // 
-            // colTipoDocumento
-            // 
-            colTipoDocumento.HeaderText = "Tipo de Documento";
-            colTipoDocumento.MinimumWidth = 8;
+            colSeleccionar.HeaderText = "";
+            colSeleccionar.Width = 44;
+            colSeleccionar.Resizable = DataGridViewTriState.False;
+            colSeleccionar.SortMode = DataGridViewColumnSortMode.NotSortable;
             colTipoDocumento.Name = "colTipoDocumento";
+            colTipoDocumento.HeaderText = "Tipo de documento";
+            colTipoDocumento.Width = 210;
+            colTipoDocumento.MinimumWidth = 160;
             colTipoDocumento.ReadOnly = true;
-            colTipoDocumento.Width = 250;
-            // 
-            // colTitulo
-            // 
-            colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTitulo.HeaderText = "Título";
-            colTitulo.MinimumWidth = 8;
+            colTipoDocumento.SortMode = DataGridViewColumnSortMode.NotSortable;
             colTitulo.Name = "colTitulo";
+            colTitulo.HeaderText = "Título";
+            colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colTitulo.MinimumWidth = 220;
             colTitulo.ReadOnly = true;
-            // 
-            // colVerPdf
-            // 
-            colVerPdf.HeaderText = "Documento";
-            colVerPdf.MinimumWidth = 8;
+            colTitulo.SortMode = DataGridViewColumnSortMode.NotSortable;
             colVerPdf.Name = "colVerPdf";
-            colVerPdf.Text = "ver";
-            colVerPdf.UseColumnTextForButtonValue = true;
-            colVerPdf.Width = 140;
-            //
-            // colVerParticipantes
-            //
-            colVerParticipantes.HeaderText = "Intervinientes";
+            colVerPdf.HeaderText = "Documento";
+            colVerPdf.Text = "Ver PDF";
+            colVerPdf.UseColumnTextForLinkValue = true;
+            colVerPdf.Width = 120;
+            colVerPdf.ReadOnly = true;
+            colVerPdf.SortMode = DataGridViewColumnSortMode.NotSortable;
             colVerParticipantes.Name = "colVerParticipantes";
-            colVerParticipantes.Text = "ver";
+            colVerParticipantes.HeaderText = "Intervinientes";
+            colVerParticipantes.Text = "Ver";
+            colVerParticipantes.UseColumnTextForLinkValue = true;
+            colVerParticipantes.Width = 130;
             colVerParticipantes.ReadOnly = true;
-            colVerParticipantes.UseColumnTextForButtonValue = true;
-            colVerParticipantes.Width = 140;
-            // 
-            // btnPaginaAnterior
-            // 
-            btnPaginaAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPaginaAnterior.Location = new Point(1071, 638);
-            btnPaginaAnterior.Name = "btnPaginaAnterior";
-            btnPaginaAnterior.Size = new Size(120, 38);
-            btnPaginaAnterior.TabIndex = 4;
-            btnPaginaAnterior.Text = "Anterior";
-            btnPaginaAnterior.UseVisualStyleBackColor = true;
-            btnPaginaAnterior.Click += btnPaginaAnterior_Click;
-            // 
-            // btnPaginaSiguiente
-            // 
-            btnPaginaSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnPaginaSiguiente.Location = new Point(1275, 638);
-            btnPaginaSiguiente.Name = "btnPaginaSiguiente";
-            btnPaginaSiguiente.Size = new Size(120, 38);
-            btnPaginaSiguiente.TabIndex = 5;
-            btnPaginaSiguiente.Text = "Siguiente";
-            btnPaginaSiguiente.UseVisualStyleBackColor = true;
-            btnPaginaSiguiente.Click += btnPaginaSiguiente_Click;
-            // 
-            // lblPagina
-            // 
-            lblPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblPagina.Location = new Point(894, 644);
-            lblPagina.Name = "lblPagina";
-            lblPagina.Size = new Size(161, 25);
-            lblPagina.TabIndex = 6;
-            lblPagina.Text = "Sin busqueda";
-            lblPagina.TextAlign = ContentAlignment.MiddleRight;
-            // 
-            // lblTotalDocumentos
-            // 
-            lblTotalDocumentos.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            lblTotalDocumentos.Location = new Point(27, 645);
-            lblTotalDocumentos.Name = "lblTotalDocumentos";
-            lblTotalDocumentos.Size = new Size(311, 25);
-            lblTotalDocumentos.TabIndex = 10;
-            lblTotalDocumentos.Text = "Total de documentos: 0";
+            colVerParticipantes.SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            layoutPaginacion.Dock = DockStyle.Fill;
+            layoutPaginacion.Margin = new Padding(0);
+            layoutPaginacion.Padding = new Padding(24, 4, 24, 4);
+            layoutPaginacion.ColumnCount = 4;
+            layoutPaginacion.RowCount = 1;
+            layoutPaginacion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutPaginacion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 42F));
+            layoutPaginacion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 156F));
+            layoutPaginacion.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 42F));
+            layoutPaginacion.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutPaginacion.Controls.Add(lblTotalDocumentos, 0, 0);
+            layoutPaginacion.Controls.Add(btnPaginaAnterior, 1, 0);
+            layoutPaginacion.Controls.Add(lblPagina, 2, 0);
+            layoutPaginacion.Controls.Add(btnPaginaSiguiente, 3, 0);
+            lblTotalDocumentos.Dock = DockStyle.Fill;
             lblTotalDocumentos.TextAlign = ContentAlignment.MiddleLeft;
-            lblTotalDocumentos.Click += lblTotalDocumentos_Click;
-            // 
-            // lblCertificadoTitulo
-            // 
-            lblCertificadoTitulo.AutoSize = true;
-            lblCertificadoTitulo.Location = new Point(24, 24);
-            lblCertificadoTitulo.Name = "lblCertificadoTitulo";
-            lblCertificadoTitulo.Size = new Size(152, 25);
-            lblCertificadoTitulo.TabIndex = 7;
-            lblCertificadoTitulo.Text = "Certificado actual:";
-            // 
-            // lblCertificadoSeleccionado
-            // 
-            lblCertificadoSeleccionado.BackColor = Color.LightYellow;
-            lblCertificadoSeleccionado.BorderStyle = BorderStyle.FixedSingle;
-            lblCertificadoSeleccionado.Location = new Point(24, 52);
-            lblCertificadoSeleccionado.Name = "lblCertificadoSeleccionado";
-            lblCertificadoSeleccionado.Size = new Size(676, 28);
-            lblCertificadoSeleccionado.TabIndex = 8;
-            lblCertificadoSeleccionado.Text = "No seleccionado";
-            // 
-            // btnSeleccionarCertificado
-            // 
-            btnSeleccionarCertificado.Location = new Point(716, 45);
-            btnSeleccionarCertificado.Name = "btnSeleccionarCertificado";
-            btnSeleccionarCertificado.Size = new Size(140, 40);
-            btnSeleccionarCertificado.TabIndex = 9;
-            btnSeleccionarCertificado.Text = "Seleccionar";
-            btnSeleccionarCertificado.UseVisualStyleBackColor = true;
-            btnSeleccionarCertificado.Click += btnSeleccionarCertificado_Click;
-            // 
-            // btnMarcarTodos
-            // 
-            btnMarcarTodos.Font = new Font("Segoe UI", 8F);
-            btnMarcarTodos.Location = new Point(47, 109);
-            btnMarcarTodos.Margin = new Padding(3, 1, 3, 1);
-            btnMarcarTodos.Name = "btnMarcarTodos";
-            btnMarcarTodos.Size = new Size(97, 55);
-            btnMarcarTodos.TabIndex = 0;
-            btnMarcarTodos.Text = "Marcar todos";
-            btnMarcarTodos.UseVisualStyleBackColor = true;
-            btnMarcarTodos.Click += btnMarcarTodos_Click;
-            // 
-            // btnLimpiarSeleccion
-            // 
-            btnLimpiarSeleccion.Font = new Font("Segoe UI", 8F);
-            btnLimpiarSeleccion.Location = new Point(170, 109);
-            btnLimpiarSeleccion.Margin = new Padding(3, 1, 3, 1);
-            btnLimpiarSeleccion.Name = "btnLimpiarSeleccion";
-            btnLimpiarSeleccion.Size = new Size(97, 55);
-            btnLimpiarSeleccion.TabIndex = 1;
-            btnLimpiarSeleccion.Text = "Limpiar selección";
-            btnLimpiarSeleccion.UseVisualStyleBackColor = true;
-            btnLimpiarSeleccion.Click += btnLimpiarSeleccion_Click;
-            // 
-            // MainForm
-            // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            lblTotalDocumentos.AutoEllipsis = true;
+            lblPagina.Dock = DockStyle.Fill;
+            lblPagina.TextAlign = ContentAlignment.MiddleCenter;
+            btnPaginaAnterior.Dock = DockStyle.Fill;
+            btnPaginaAnterior.AccessibleName = "Página anterior";
+            btnPaginaAnterior.Click += btnPaginaAnterior_Click;
+            btnPaginaSiguiente.Dock = DockStyle.Fill;
+            btnPaginaSiguiente.AccessibleName = "Página siguiente";
+            btnPaginaSiguiente.TabIndex = 1;
+            btnPaginaSiguiente.Click += btnPaginaSiguiente_Click;
+
+            layoutFirma.Dock = DockStyle.Fill;
+            layoutFirma.Margin = new Padding(0);
+            layoutFirma.Padding = new Padding(24, 12, 24, 12);
+            layoutFirma.ColumnCount = 2;
+            layoutFirma.RowCount = 1;
+            layoutFirma.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutFirma.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 256F));
+            layoutFirma.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            layoutFirma.Controls.Add(layoutResumenFirma, 0, 0);
+            layoutFirma.Controls.Add(btnFirmarDocumentos, 1, 0);
+            layoutResumenFirma.Dock = DockStyle.Fill;
+            layoutResumenFirma.Margin = new Padding(0, 0, 12, 0);
+            layoutResumenFirma.ColumnCount = 1;
+            layoutResumenFirma.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            layoutResumenFirma.RowCount = 2;
+            layoutResumenFirma.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            layoutResumenFirma.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            layoutResumenFirma.Controls.Add(lblResumenSeleccion, 0, 0);
+            layoutResumenFirma.Controls.Add(lblResumenCertificado, 0, 1);
+            lblResumenSeleccion.Dock = DockStyle.Fill;
+            lblResumenSeleccion.Text = "Sin documentos seleccionados";
+            lblResumenSeleccion.TextAlign = ContentAlignment.MiddleLeft;
+            lblResumenCertificado.Dock = DockStyle.Fill;
+            lblResumenCertificado.AutoEllipsis = true;
+            lblResumenCertificado.TextAlign = ContentAlignment.MiddleLeft;
+            btnFirmarDocumentos.Anchor = AnchorStyles.Right;
+            btnFirmarDocumentos.Size = new Size(250, 48);
+            btnFirmarDocumentos.Text = "Firmar documentos";
+            btnFirmarDocumentos.Click += btnFirmarDocumentos_Click;
+
+            layoutCabecera.TabIndex = 0;
+            layoutCertificado.TabIndex = 1;
+            layoutDocumentos.TabIndex = 2;
+            layoutSeleccion.TabIndex = 3;
+            panelGrilla.TabIndex = 4;
+            layoutPaginacion.TabIndex = 5;
+            layoutFirma.TabIndex = 6;
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1419, 700);
-            Controls.Add(btnLimpiarSeleccion);
-            Controls.Add(btnMarcarTodos);
-            Controls.Add(lblTotalDocumentos);
-            Controls.Add(btnSeleccionarCertificado);
-            Controls.Add(lblCertificadoSeleccionado);
-            Controls.Add(lblCertificadoTitulo);
-            Controls.Add(lblPagina);
-            Controls.Add(btnPaginaSiguiente);
-            Controls.Add(btnPaginaAnterior);
-            Controls.Add(dgvDocumentos);
-            Controls.Add(btnSalir);
-            Controls.Add(btnFirmarDocumentos);
-            Controls.Add(btnBuscar);
+            Font = new Font("Segoe UI", 10F);
+            ClientSize = new Size(1180, 760);
+            MinimumSize = new Size(940, 650);
+            StartPosition = FormStartPosition.CenterScreen;
+            Controls.Add(layoutPrincipal);
             Name = "MainForm";
             Text = "Firmador Cliente EDA";
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picAplicacion).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picCertificado).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
-
         #endregion
 
+        private TableLayoutPanel layoutPrincipal;
+        private TableLayoutPanel layoutCabecera;
+        private TableLayoutPanel layoutTitulos;
+        private TableLayoutPanel layoutCertificado;
+        private TableLayoutPanel layoutDatosCertificado;
+        private TableLayoutPanel layoutDocumentos;
+        private TableLayoutPanel layoutSeleccion;
+        private TableLayoutPanel layoutPaginacion;
+        private TableLayoutPanel layoutFirma;
+        private TableLayoutPanel layoutResumenFirma;
+        private Panel panelGrilla;
+        private PictureBox picAplicacion;
+        private PictureBox picCertificado;
+        private Label lblAplicacion;
+        private Label lblSubtitulo;
+        private Label lblDocumentosTitulo;
+        private Label lblCertificadoDetalle;
+        private Label lblCertificadoEstado;
+        private Label lblSeleccion;
+        private Label lblResumenSeleccion;
+        private Label lblResumenCertificado;
+        private Label lblEstadoGrilla;
+        private ToolTip toolTip;
         private Button btnBuscar;
         private Button btnFirmarDocumentos;
         private Button btnSalir;
@@ -273,8 +400,8 @@
         private DataGridViewCheckBoxColumn colSeleccionar;
         private DataGridViewTextBoxColumn colTipoDocumento;
         private DataGridViewTextBoxColumn colTitulo;
-        private DataGridViewButtonColumn colVerPdf;
-        private DataGridViewButtonColumn colVerParticipantes;
+        private DataGridViewLinkColumn colVerPdf;
+        private DataGridViewLinkColumn colVerParticipantes;
         private Button btnPaginaAnterior;
         private Button btnPaginaSiguiente;
         private Label lblPagina;
@@ -286,4 +413,3 @@
         private Button btnLimpiarSeleccion;
     }
 }
-
