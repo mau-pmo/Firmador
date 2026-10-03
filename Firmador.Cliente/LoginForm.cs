@@ -2,6 +2,15 @@ namespace Firmador.Cliente;
 
 internal partial class LoginForm : Form
 {
+    private readonly List<IDisposable> _recursosVisuales = [];
+
+    private Font CrearFuente(float puntos, FontStyle estilo = FontStyle.Regular)
+    {
+        var fuente = new Font("Segoe UI", puntos, estilo);
+        _recursosVisuales.Add(fuente);
+        return fuente;
+    }
+
     public string Usuario => _usuario.Text.Trim();
     public string Contrasena => _contrasena.Text;
 
