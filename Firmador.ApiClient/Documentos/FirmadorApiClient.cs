@@ -57,6 +57,29 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
         };
     }
 
+    public async Task<DocumentoParticipantes> ObtenerParticipantesAsync(int documentoId, CancellationToken cancellationToken = default)
+    {
+        using var respuesta = await EnviarAutorizadoAsync(() => new HttpRequestMessage(HttpMethod.Get,
+            $"api/v1/documents/{documentoId}/participants"), cancellationToken);
+        var participantes = await respuesta.Content.ReadFromJsonAsync<ParticipantsResponse>(JsonOptions, cancellationToken)
+            ?? throw new InvalidDataException("La API devolvió participantes vacíos.");
+        if (participantes.Document?.Id != documentoId)
+            throw new InvalidDataException("Los participantes recibidos no corresponden al documento solicitado.");
+
+        return new DocumentoParticipantes(documentoId,
+            participantes.Author is { } autor ? new ParticipanteDocumento(autor.Name) : null,
+            participantes.Assignee is { } editor ? new ParticipanteDocumento(editor.Name) : null,
+            (participantes.Reviewers ?? []).Select(item => new RevisorDocumento(
+                item.Orden, item.Status, item.RevisadoAt, item.Name)).ToArray(),
+            (participantes.Signers ?? []).Select(item => new FirmanteDocumento(
+                item.Orden, item.Status, item.FirmadoAt, item.Type,
+                item.Type == "group" ? item.Nombre : item.Name)
+            {
+                Miembros = (item.Miembros ?? []).Select(miembro => new MiembroGrupoFirmante(
+                    miembro.Name, miembro.Status, miembro.FirmadoAt)).ToArray()
+            }).ToArray());
+    }
+
     public async Task<byte[]> DescargarPdfAsync(DocumentoResumen documento, CancellationToken cancellationToken = default)
     {
         using var respuesta = await EnviarAutorizadoAsync(() =>
@@ -187,4 +210,12 @@ public sealed class FirmadorApiClient : IFirmadorApiClient, IDisposable
     private sealed record DocumentPage(List<DocumentItem>? Items, int PageNumber, int PageSize, int TotalCount);
     private sealed record DocumentItem(int Id, string Type, string Title, string Version, string Sha256);
     private sealed record UploadResponse(int DocumentId, string Status, string SignedFileSha256);
+    private sealed record ParticipantsResponse(ParticipantDocument? Document, ParticipantName? Author,
+        ParticipantName? Assignee, List<ReviewerResponse>? Reviewers, List<SignerResponse>? Signers);
+    private sealed record ParticipantDocument(int Id);
+    private sealed record ParticipantName(string? Name);
+    private sealed record ReviewerResponse(int Orden, string? Status, DateTimeOffset? RevisadoAt, string? Name);
+    private sealed record SignerResponse(int Orden, string? Status, DateTimeOffset? FirmadoAt, string? Type,
+        string? Name, string? Nombre, List<GroupMemberResponse>? Miembros);
+    private sealed record GroupMemberResponse(string? Name, string? Status, DateTimeOffset? FirmadoAt);
 }

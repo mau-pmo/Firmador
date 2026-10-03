@@ -32,7 +32,20 @@ Los datos se muestran en una tabla, ocultando el id y el hash. La tabla queda co
 - Id, oculto
 - Tipo de documento, visible
 - Título, visible
-- Botón `Ver documento`, visible
+- Columna `Documento` con botón `ver` en cada fila, visible
+- Columna `Intervinientes` con botón `ver` en cada fila, visible
+
+#### Ver participantes
+
+El botón `ver` de la columna `Intervinientes` de cada fila abre una ventana modal centrada sobre Firmador con el título del documento y las secciones Creador, Editor, Revisores y Firmantes. No requiere seleccionar el documento con el checkbox.
+
+La ventana consulta `GET /api/v1/documents/{id}/participants` en cada apertura, muestra un indicador de carga y permite cerrar o reintentar ante errores. Cerrar durante la carga cancela la consulta; si la sesión vence, vuelve al login.
+
+Los revisores y firmantes se muestran por `orden`, con su estado y, cuando corresponda, la fecha de revisión o firma en formato `d/M/yyyy`, conservando el huso horario recibido. Los pendientes se muestran como `pendiente`; las revisiones y firmas sin fecha indican `fecha no informada`. Otros estados se muestran tal como llegan de la API.
+
+Cuando falta el creador o editor se muestra `No informado`; las listas vacías indican `Sin revisores` o `Sin firmantes`. La ventana admite nombres largos y desplazamiento para listas extensas.
+
+Los firmantes pueden ser individuales o grupos. Para grupos se usa el campo `nombre`, precedido por el texto fijo `Grupo: `: si el grupo está pendiente se muestra `Grupo: nombre — pendiente`; si está firmado se muestra `Grupo: nombre — firmado por: persona1, persona2`, incluyendo únicamente miembros con estado `signed`, en el orden recibido y sin fechas individuales. El estado del grupo es el que determina su presentación: puede estar firmado aunque algunos miembros sigan pendientes, y puede estar pendiente aunque algún miembro ya haya firmado. Otros estados se muestran literalmente. Si un grupo firmado no informa miembros firmados, se muestra `Grupo: nombre — firmado — firmantes no informados`; nombres ausentes se muestran como `No informado`.
 
 ### 3. Firmar
 

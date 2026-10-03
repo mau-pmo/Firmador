@@ -36,6 +36,7 @@
             colTipoDocumento = new DataGridViewTextBoxColumn();
             colTitulo = new DataGridViewTextBoxColumn();
             colVerPdf = new DataGridViewButtonColumn();
+            colVerParticipantes = new DataGridViewButtonColumn();
             btnPaginaAnterior = new Button();
             btnPaginaSiguiente = new Button();
             lblPagina = new Label();
@@ -89,7 +90,7 @@
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             dgvDocumentos.BackgroundColor = SystemColors.Window;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf });
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { colSeleccionar, colTipoDocumento, colTitulo, colVerPdf, colVerParticipantes });
             dgvDocumentos.Location = new Point(24, 168);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
@@ -103,7 +104,6 @@
             // 
             // colSeleccionar
             // 
-            colSeleccionar.DataPropertyName = "Seleccionado";
             colSeleccionar.HeaderText = "";
             colSeleccionar.MinimumWidth = 8;
             colSeleccionar.Name = "colSeleccionar";
@@ -111,7 +111,6 @@
             // 
             // colTipoDocumento
             // 
-            colTipoDocumento.DataPropertyName = "TipoDocumento";
             colTipoDocumento.HeaderText = "Tipo de Documento";
             colTipoDocumento.MinimumWidth = 8;
             colTipoDocumento.Name = "colTipoDocumento";
@@ -121,7 +120,6 @@
             // colTitulo
             // 
             colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTitulo.DataPropertyName = "Titulo";
             colTitulo.HeaderText = "Título";
             colTitulo.MinimumWidth = 8;
             colTitulo.Name = "colTitulo";
@@ -129,12 +127,21 @@
             // 
             // colVerPdf
             // 
-            colVerPdf.HeaderText = "";
+            colVerPdf.HeaderText = "Documento";
             colVerPdf.MinimumWidth = 8;
             colVerPdf.Name = "colVerPdf";
-            colVerPdf.Text = "Ver PDF";
+            colVerPdf.Text = "ver";
             colVerPdf.UseColumnTextForButtonValue = true;
-            colVerPdf.Width = 100;
+            colVerPdf.Width = 140;
+            //
+            // colVerParticipantes
+            //
+            colVerParticipantes.HeaderText = "Intervinientes";
+            colVerParticipantes.Name = "colVerParticipantes";
+            colVerParticipantes.Text = "ver";
+            colVerParticipantes.ReadOnly = true;
+            colVerParticipantes.UseColumnTextForButtonValue = true;
+            colVerParticipantes.Width = 140;
             // 
             // btnPaginaAnterior
             // 
@@ -267,6 +274,7 @@
         private DataGridViewTextBoxColumn colTipoDocumento;
         private DataGridViewTextBoxColumn colTitulo;
         private DataGridViewButtonColumn colVerPdf;
+        private DataGridViewButtonColumn colVerParticipantes;
         private Button btnPaginaAnterior;
         private Button btnPaginaSiguiente;
         private Label lblPagina;
