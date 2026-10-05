@@ -2,144 +2,148 @@ namespace Firmador.Cliente
 {
     partial class LoginForm
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private System.ComponentModel.IContainer components = new System.ComponentModel.Container();
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-
+            if (disposing) components?.Dispose();
             base.Dispose(disposing);
+            if (disposing)
+            {
+                foreach (var recurso in _recursosVisuales) recurso.Dispose();
+                _recursosVisuales.Clear();
+            }
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            lblUsuario = new Label();
-            _usuario = new TextBox();
-            lblContrasena = new Label();
-            _contrasena = new TextBox();
-            btnIngresar = new Button();
-            btnCancelar = new Button();
-            lblIngreseCredenciales = new Label();
             SuspendLayout();
-            // 
-            // lblUsuario
-            // 
-            lblUsuario.AutoSize = true;
-            lblUsuario.Location = new Point(65, 103);
-            lblUsuario.Margin = new Padding(4, 0, 4, 0);
-            lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(76, 25);
-            lblUsuario.TabIndex = 0;
-            lblUsuario.Text = "Usuario:";
-            // 
-            // _usuario
-            // 
-            _usuario.Location = new Point(65, 134);
-            _usuario.Margin = new Padding(4);
-            _usuario.Name = "_usuario";
-            _usuario.Size = new Size(465, 31);
-            _usuario.TabIndex = 1;
-            // 
-            // lblContrasena
-            // 
-            lblContrasena.AutoSize = true;
-            lblContrasena.Location = new Point(65, 190);
-            lblContrasena.Margin = new Padding(4, 0, 4, 0);
-            lblContrasena.Name = "lblContrasena";
-            lblContrasena.Size = new Size(105, 25);
-            lblContrasena.TabIndex = 2;
-            lblContrasena.Text = "Contraseña:";
-            // 
-            // _contrasena
-            // 
-            _contrasena.Location = new Point(65, 221);
-            _contrasena.Margin = new Padding(4);
-            _contrasena.Name = "_contrasena";
-            _contrasena.Size = new Size(465, 31);
-            _contrasena.TabIndex = 3;
-            _contrasena.UseSystemPasswordChar = true;
-            // 
-            // btnIngresar
-            // 
-            btnIngresar.Location = new Point(294, 301);
-            btnIngresar.Margin = new Padding(4);
-            btnIngresar.Name = "btnIngresar";
-            btnIngresar.Size = new Size(112, 36);
-            btnIngresar.TabIndex = 4;
-            btnIngresar.Text = "Ingresar";
-            btnIngresar.UseVisualStyleBackColor = true;
-            // 
-            // btnCancelar
-            // 
-            btnCancelar.DialogResult = DialogResult.Cancel;
-            btnCancelar.Location = new Point(420, 301);
-            btnCancelar.Margin = new Padding(4);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(112, 36);
-            btnCancelar.TabIndex = 5;
-            btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
-            // 
-            // lblIngreseCredenciales
-            // 
-            lblIngreseCredenciales.AutoSize = true;
-            lblIngreseCredenciales.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
-            lblIngreseCredenciales.Location = new Point(65, 40);
-            lblIngreseCredenciales.Name = "lblIngreseCredenciales";
-            lblIngreseCredenciales.Size = new Size(413, 25);
-            lblIngreseCredenciales.TabIndex = 6;
-            lblIngreseCredenciales.Text = "Por favor ingrese sus credenciales de acceso al EDA";
-            // 
-            // LoginForm
-            // 
-            AcceptButton = btnIngresar;
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
-            CancelButton = btnCancelar;
-            ClientSize = new Size(690, 390);
-            Controls.Add(lblIngreseCredenciales);
-            Controls.Add(btnCancelar);
-            Controls.Add(btnIngresar);
-            Controls.Add(_contrasena);
-            Controls.Add(lblContrasena);
-            Controls.Add(_usuario);
-            Controls.Add(lblUsuario);
+            AutoScaleDimensions = new SizeF(96, 96);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            Font = CrearFuente(10);
+            BackColor = TemaVisual.Fondo;
+            ForeColor = TemaVisual.Texto;
+            ClientSize = new Size(460, 440);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Margin = new Padding(4);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Iniciar sesión - Firmador Cliente EDA";
-            ResumeLayout(false);
-            PerformLayout();
+            Name = "LoginForm";
+            Text = "Iniciar sesión - Firmador EDA";
+
+            var principal = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill, Padding = new Padding(24), ColumnCount = 1, RowCount = 3,
+                Margin = Padding.Empty
+            };
+            principal.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            principal.RowStyles.Add(new RowStyle(SizeType.Absolute, 56));
+            principal.RowStyles.Add(new RowStyle(SizeType.Absolute, 16));
+            principal.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            var cabecera = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = Padding.Empty
+            };
+            cabecera.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 44));
+            cabecera.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            var imagen = TemaVisual.CrearIcono("\uE70F", 32, TemaVisual.Azul);
+            _recursosVisuales.Add(imagen);
+            cabecera.Controls.Add(new PictureBox
+            {
+                Image = imagen, SizeMode = PictureBoxSizeMode.Zoom, Size = new Size(32, 32),
+                Anchor = AnchorStyles.Left, Margin = Padding.Empty, TabStop = false
+            }, 0, 0);
+            cabecera.Controls.Add(new Label
+            {
+                Text = "Firmador EDA", Font = CrearFuente(21, FontStyle.Bold), AutoSize = true,
+                Anchor = AnchorStyles.Left, Margin = Padding.Empty
+            }, 1, 0);
+            principal.Controls.Add(cabecera, 0, 0);
+
+            var tarjeta = new PanelBorde
+            {
+                Dock = DockStyle.Fill, Padding = new Padding(20), Margin = Padding.Empty, AutoScroll = true
+            };
+            var campos = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top, Height = 272, ColumnCount = 1, RowCount = 9, Margin = Padding.Empty
+            };
+            campos.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            foreach (var altura in new[] { 30, 38, 22, 36, 12, 22, 36 })
+                campos.RowStyles.Add(new RowStyle(SizeType.Absolute, altura));
+            campos.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            campos.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            campos.Controls.Add(new Label
+            {
+                Text = "Iniciar sesión", Font = CrearFuente(14, FontStyle.Bold), AutoSize = true,
+                Dock = DockStyle.Fill, Margin = Padding.Empty
+            }, 0, 0);
+            lblIngreseCredenciales = new Label
+            {
+                Text = "Ingrese sus credenciales de acceso al EDA", Font = CrearFuente(9),
+                ForeColor = TemaVisual.TextoSecundario, Dock = DockStyle.Fill, Margin = Padding.Empty
+            };
+            campos.Controls.Add(lblIngreseCredenciales, 0, 1);
+            lblUsuario = new Label { Text = "Usuario", Dock = DockStyle.Fill, Margin = Padding.Empty };
+            lblContrasena = new Label { Text = "Contraseña", Dock = DockStyle.Fill, Margin = Padding.Empty };
+            _usuario = new TextBox { Name = "_usuario", TabIndex = 0 };
+            _contrasena = new TextBox { Name = "_contrasena", TabIndex = 0, UseSystemPasswordChar = true };
+            campos.Controls.Add(lblUsuario, 0, 2);
+            campos.Controls.Add(CrearEntrada(_usuario, 0), 0, 3);
+            campos.Controls.Add(lblContrasena, 0, 5);
+            campos.Controls.Add(CrearEntrada(_contrasena, 1), 0, 6);
+
+            var acciones = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false, Margin = Padding.Empty, TabIndex = 2
+            };
+            btnIngresar = new Button
+            {
+                Name = "btnIngresar", Text = "Ingresar", Size = new Size(108, 36),
+                Margin = Padding.Empty, TabIndex = 1, Font = CrearFuente(10, FontStyle.Bold)
+            };
+            btnCancelar = new Button
+            {
+                Name = "btnCancelar", Text = "Cancelar", Size = new Size(108, 36),
+                Margin = new Padding(0, 0, 8, 0), TabIndex = 0, DialogResult = DialogResult.Cancel
+            };
+            TemaVisual.EstilarBoton(btnIngresar, principal: true);
+            TemaVisual.EstilarBoton(btnCancelar);
+            acciones.Controls.Add(btnIngresar);
+            acciones.Controls.Add(btnCancelar);
+            campos.Controls.Add(acciones, 0, 8);
+            tarjeta.Controls.Add(campos);
+            principal.Controls.Add(tarjeta, 0, 2);
+            Controls.Add(principal);
+            AcceptButton = btnIngresar;
+            CancelButton = btnCancelar;
+            ResumeLayout(true);
         }
 
-        #endregion
+        private Panel CrearEntrada(TextBox entrada, int orden)
+        {
+            var borde = new PanelBorde
+            {
+                Dock = DockStyle.Fill, Margin = Padding.Empty, Padding = new Padding(10, 7, 10, 7),
+                ResaltarFoco = true, TabIndex = orden
+            };
+            entrada.BorderStyle = BorderStyle.None;
+            entrada.BackColor = TemaVisual.Superficie;
+            entrada.ForeColor = TemaVisual.Texto;
+            entrada.Dock = DockStyle.Fill;
+            entrada.Enter += (_, _) => borde.Invalidate();
+            entrada.Leave += (_, _) => borde.Invalidate();
+            borde.Controls.Add(entrada);
+            return borde;
+        }
 
-        private Label lblUsuario;
-        private TextBox _usuario;
-        private Label lblContrasena;
-        private TextBox _contrasena;
-        private Button btnIngresar;
-        private Button btnCancelar;
-        private Label lblIngreseCredenciales;
+        private Label lblUsuario = null!;
+        private TextBox _usuario = null!;
+        private Label lblContrasena = null!;
+        private TextBox _contrasena = null!;
+        private Button btnIngresar = null!;
+        private Button btnCancelar = null!;
+        private Label lblIngreseCredenciales = null!;
     }
 }

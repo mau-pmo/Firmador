@@ -13,6 +13,8 @@ La aplicación realiza el login del usuario, con usuario y contraseña, contra u
 - En caso de estar autorizado, permite ingresar al `MainForm`.
 - Si el refresh token vence o deja de ser válido, descarta la sesión y vuelve a mostrar el login para solicitar nuevamente las credenciales.
 
+La ventana de acceso comparte la identidad visual de la pantalla principal: cabecera `Firmador EDA`, fondo gris claro, tarjeta blanca y botón principal azul. Los campos conservan sus etiquetas y resaltan el borde al recibir foco; la contraseña permanece oculta. Enter permite ingresar y Escape cancela. En pantallas con poca altura, la tarjeta admite desplazamiento para mantener accesibles los campos y botones. La autenticación y sus mensajes conservan el flujo existente.
+
 ### 2. Buscar documentos a firmar
 
 En `MainForm` se encuentra el botón `Buscar`. Al presionar ese botón, la aplicación realiza una consulta a un API que retorna una lista de documentos a firmar, también llamados borradores.
@@ -32,14 +34,29 @@ Los datos se muestran en una tabla, ocultando el id y el hash. La tabla queda co
 - Id, oculto
 - Tipo de documento, visible
 - Título, visible
-- Columna `Documento` con botón `ver` en cada fila, visible
-- Columna `Intervinientes` con botón `ver` en cada fila, visible
+- Columna `Documento` con acción `Ver PDF` en cada fila, visible
+- Columna `Intervinientes` con acción `Ver` en cada fila, visible
+
+#### Presentación de la pantalla principal
+
+- La cabecera identifica la aplicación y mantiene la acción `Salir`.
+- La cabecera muestra únicamente `Firmador EDA`. La franja compacta del certificado muestra su etiqueta y el titular en la primera línea, con el vencimiento debajo, y separadores horizontales arriba y abajo.
+- El título de documentos y las acciones de selección tienen alturas compactas para priorizar la tabla, que se delimita con un borde gris fino tanto con documentos como en los estados vacíos.
+- La franja de certificado muestra el titular, el vencimiento y el estado de selección. Permite seleccionar o cambiar el certificado; no indica que el token esté conectado.
+- La tabla usa filas celestes únicamente para documentos marcados con el checkbox. El foco de teclado no equivale a seleccionar un documento para firmar.
+- Las acciones `Marcar todos` y `Limpiar selección` afectan la página actual. El contador y el botón de firma se actualizan con la selección.
+- La barra inferior muestra el resumen de selección y el certificado. El botón indica la cantidad de documentos a firmar y permanece deshabilitado cuando no hay documentos seleccionados.
+- La pantalla distingue la búsqueda inicial, la carga y una búsqueda sin resultados. La paginación muestra el rango de documentos y la página actual.
+- Durante la búsqueda o firma se bloquean las acciones incompatibles. Durante la firma se muestra el número de documento en proceso.
+- La ventana inicial se ajusta al área útil del monitor para mantener visible la barra de firma. Los anchos de las columnas y el área del checkbox se adaptan al escalado de Windows.
 
 #### Ver participantes
 
 El botón `ver` de la columna `Intervinientes` de cada fila abre una ventana modal centrada sobre Firmador con el título del documento y las secciones Creador, Editor, Revisores y Firmantes. No requiere seleccionar el documento con el checkbox.
 
 La ventana consulta `GET /api/v1/documents/{id}/participants` en cada apertura, muestra un indicador de carga y permite cerrar o reintentar ante errores. Cerrar durante la carga cancela la consulta; si la sesión vence, vuelve al login.
+
+La cabecera con el título del documento y el pie con las acciones permanecen fijos. El contenido desplazable presenta cuatro tarjetas blancas con bordes finos. En revisores y firmantes, el nombre y el estado aparecen en líneas separadas; los estados pendientes usan un acento de advertencia y los completados, verde, siempre acompañados por texto. Los estados desconocidos conservan su valor y usan texto secundario. La ventana permite cambiar de tamaño y comparte paleta, tipografía y botones con la pantalla principal.
 
 Los revisores y firmantes se muestran por `orden`, con su estado y, cuando corresponda, la fecha de revisión o firma en formato `d/M/yyyy`, conservando el huso horario recibido. Los pendientes se muestran como `pendiente`; las revisiones y firmas sin fecha indican `fecha no informada`. Otros estados se muestran tal como llegan de la API.
 
@@ -57,5 +74,6 @@ La aplicación valida que haya al menos un documento seleccionado en la tabla. L
 - El certificado debe provenir de un token USB conectado.
 - Una vez seleccionado, se aplica la firma.
 - La firma incorpora un sello de tiempo emitido por la TSA configurada.
+- Si no hay acceso a la TSA, la firma se detiene e informa `No hay acceso al servidor de sello de tiempo (TSA)`. Si falla la conexión con la API, informa `No hay acceso al servidor EDA`.
 - En `MainForm` se debe mostrar el certificado seleccionado.
 - No se debe volver a pedir el certificado hasta que se cierre el programa.

@@ -5,7 +5,7 @@ namespace Firmador.Cliente.Services;
 
 internal static class ErroresConexion
 {
-    public const string Mensaje = "No fue posible establecer conexión con el servidor.\nPor favor verifique su conectividad";
+    public const string Mensaje = "No hay acceso al servidor EDA";
 
     public static bool EsFallaDeConexion(Exception exception)
     {
